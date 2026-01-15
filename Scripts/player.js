@@ -15,4 +15,8 @@ class Player {
         this.dead = false;
         this.health = 100;
     }
+
+    attack() {
+        //placeholder.
+    }
 }
