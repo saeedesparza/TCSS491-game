@@ -1,14 +1,14 @@
 class Caveman {
-    constructor() {
+    constructor(game) {
         this.game = game;
-        this.animator() = new Animator(ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"), 0, 0, 32, 32, 4, 0.2, 0, true, true);
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"), 0, 0, 32, 32, 16, 0.2, 0, false, true);
     };
 
     update() {
-
+        
     };
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, 25, 25, 2);
+        this.animator.drawFrame(this.game.clockTick, ctx, 25, 25, 4);
     }
 }

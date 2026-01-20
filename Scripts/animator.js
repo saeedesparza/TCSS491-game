@@ -19,20 +19,28 @@ class Animator {
         }
 
         let frame = this.currentFrame();
-        if (this.reverse) frame = this.frameCount - frame - 1;
-       
-        ctx.drawImage(this.spritesheet,
-            this.xStart + frame * (this.width + this.framePadding), this.yStart, //source from sheet
-            this.width, this.height,
-            x, y,
-            this.width * scale,
-            this.height * scale);
-
-        if (PARAMS.DEBUG) {
-            ctx.strokeStyle = 'Green';
-            ctx.strokeRect(x, y, this.width * scale, this.height * scale);
+        if (this.reverse) {
+            frame = this.frameCount - frame - 1;
         }
-    };
+
+        const columns = Math.floor(this.spritesheet.width / this.width);
+
+        const col = frame % columns;
+        const row = Math.floor(frame / columns);
+
+        const sx = this.xStart + col * (this.width + this.framePadding);
+        const sy = this.yStart + row * (this.height + this.framePadding);
+
+        ctx.drawImage(
+            this.spritesheet,
+            sx, sy,                 // source x, y
+            this.width, this.height, // source width, height
+            x, y,                   // destination x, y
+            this.width * scale,
+            this.height * scale
+        );
+    }
+
 
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration);
