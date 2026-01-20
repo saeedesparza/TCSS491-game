@@ -49,6 +49,9 @@ window.requestAnimFrame = (() => {
         });
 })();
 
+/* Create a global binding so unqualified calls to `requestAnimFrame` work */
+var requestAnimFrame = window.requestAnimFrame;
+
 /**
  * Returns distance from two points
  * @param {Number} p1, p2 Two objects with x and y coordinates
