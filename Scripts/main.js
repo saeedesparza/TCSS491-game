@@ -13,4 +13,8 @@ ASSET_MANAGER.downloadAll(() => {
 	gameEngine.init(ctx);
 
 	gameEngine.start();
+
+	window.addEventListener("resize", () => {
+	resizeCanvas(canvas, ctx);
+	});
 });

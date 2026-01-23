@@ -6,11 +6,11 @@ class Caveman {
         this.y = 25;
         this.facing = -1;
 
-        this.speed = 800;
+        this.speed = 600;
 
         this.animator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"),
-            0, 0, 32, 32, 16, 0.1, 0, false, true
+            0, 0, 32, 32, 16, 0.034, 0, false, true
         );
     }
 
@@ -27,9 +27,6 @@ class Caveman {
             dx += 1;
             this.facing = -1;
         }
-
-        if (this.game.isKeyPressed("w")) dy -= 1;
-        if (this.game.isKeyPressed("s")) dy += 1;
 
         const len = Math.hypot(dx, dy);
         if (len > 0) {
@@ -50,7 +47,7 @@ class Caveman {
     draw(ctx) {
         ctx.save();
 
-        const scale = 4;
+        const scale = 1.5;
         const spriteWidth = 32 * scale;
 
         if (this.facing === -1) {
