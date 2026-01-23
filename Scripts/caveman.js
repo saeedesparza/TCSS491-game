@@ -1,7 +1,7 @@
 class Caveman {
     constructor(game) {
         this.game = game;
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"), 0, 0, 32, 32, 16, 0.2, 0, false, true);
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"), 0, 0, 32, 32, 16, 0.05, 0, false, true);
     };
 
     update() {
