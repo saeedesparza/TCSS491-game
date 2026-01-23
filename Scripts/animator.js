@@ -33,9 +33,9 @@ class Animator {
 
         ctx.drawImage(
             this.spritesheet,
-            sx, sy,                 // source x, y
-            this.width, this.height, // source width, height
-            x, y,                   // destination x, y
+            sx, sy,
+            this.width, this.height,
+            x, y,
             this.width * scale,
             this.height * scale
         );

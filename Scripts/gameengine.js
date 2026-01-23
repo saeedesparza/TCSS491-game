@@ -1,20 +1,14 @@
-// This game shell was happily modified from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 class GameEngine {
     constructor(options) {
-        // What you will use to draw
-        // Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         this.ctx = null;
 
-        // Everything that will be updated and drawn each frame
         this.entities = [];
 
-        // Information on the input
         this.click = null;
         this.mouse = null;
         this.wheel = null;
         this.keys = {};
 
-        // Options and the Details
         this.options = options || {
             debugging: false,
         };
@@ -27,7 +21,7 @@ class GameEngine {
     };
 
     start() {
-        this.running = true;
+        this.running = true; 
         const gameLoop = () => {
             this.loop();
             requestAnimFrame(gameLoop, this.ctx.canvas);
@@ -40,8 +34,26 @@ class GameEngine {
             x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
             y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
         });
-        
-        this.ctx.canvas.addEventListener("mousemove", e => {
+
+        this.ctx.canvas.tabIndex = 0;
+        this.ctx.canvas.focus();
+
+        this.ctx.canvas.addEventListener("keydown", (event) => {
+            const k = event.key.toLowerCase();
+            this.keys[k] = true;
+
+            if (["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"," "].includes(k)) {
+                event.preventDefault();
+            }
+        });
+
+        this.ctx.canvas.addEventListener("keyup", (event) => {
+            const k = event.key.toLowerCase();
+            this.keys[k] = false;
+            event.preventDefault();
+        });
+
+                this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.options.debugging) {
                 console.log("MOUSE_MOVE", getXandY(e));
             }
@@ -59,7 +71,7 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("WHEEL", getXandY(e), e.wheelDelta);
             }
-            e.preventDefault(); // Prevent Scrolling
+            e.preventDefault();
             this.wheel = e;
         });
 
@@ -67,23 +79,18 @@ class GameEngine {
             if (this.options.debugging) {
                 console.log("RIGHT_CLICK", getXandY(e));
             }
-            e.preventDefault(); // Prevent Context Menu
+            e.preventDefault();
             this.rightclick = getXandY(e);
         });
-
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
-    };
+    }
 
     addEntity(entity) {
         this.entities.push(entity);
     };
 
     draw() {
-        // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        // Draw latest things first
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
@@ -112,5 +119,13 @@ class GameEngine {
         this.update();
         this.draw();
     };
+
+    isKeyPressed(key) {
+        key = key.toLowerCase();
+        if (this.keys[key]) {
+            return true;
+        }
+        return false;
+    }
 
 };
