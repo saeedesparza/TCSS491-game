@@ -4,20 +4,31 @@ class Caveman {
 
         this.x = 25;
         this.y = 25;
+
+        this.width = 32 * 1.5;
+        this.height = 32 * 1.5;
+
         this.facing = -1;
+        this.speed = 300;
 
-        this.speed = 600;
+        
+        this.velocityY = 0;
+        this.gravity = 2000;      
+        this.jumpStrength = 700;
+        this.onGround = false;
 
+        
         this.animator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"),
             0, 0, 32, 32, 16, 0.034, 0, false, true
         );
+        this.animating = false;  
     }
 
     update() {
         let dx = 0;
-        let dy = 0;
 
+        // Horizontal movement input
         if (this.game.isKeyPressed("a")) {
             dx -= 1;
             this.facing = 1;
@@ -28,46 +39,73 @@ class Caveman {
             this.facing = -1;
         }
 
-        const len = Math.hypot(dx, dy);
-        if (len > 0) {
-            dx /= len;
-            dy /= len;
+        // Jump input
+        if (this.game.isKeyPressed(" ") && this.onGround) {
+            this.velocityY = -this.jumpStrength;
+            this.onGround = false;
         }
 
         const dt = this.game.clockTick;
-        this.x += dx * this.speed * dt;
-        this.y += dy * this.speed * dt;
 
+        // Apply horizontal movement
+        this.x += dx * this.speed * dt;
+
+        // Apply gravity
+        this.velocityY += this.gravity * dt;
+        this.y += this.velocityY * dt;
+
+        // Handle collisions with platforms
+        this.handleCollisions();
+
+        // Decide whether to animate: only if moving and on ground
+        this.animating = this.onGround && dx !== 0;
+
+        // Keep within canvas bounds
         const canvas = this.game.ctx.canvas;
-        const spriteSize = 32 * 4;
-        this.x = Math.max(0, Math.min(this.x, canvas.width - spriteSize));
-        this.y = Math.max(0, Math.min(this.y, canvas.height - spriteSize));
+        this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
+    }
+
+    handleCollisions() {
+        this.onGround = false;
+
+        for (const entity of this.game.entities) {
+            if (!(entity instanceof Platform)) continue;
+
+            if (this.collide(entity)) {
+                // Landing on platform
+                if (this.velocityY > 0) {
+                    this.y = entity.y - this.height;
+                    this.velocityY = 0;
+                    this.onGround = true;
+                }
+            }
+        }
+    }
+
+    collide(other) {
+        return (
+            this.x < other.x + other.width &&
+            this.x + this.width > other.x &&
+            this.y < other.y + other.height &&
+            this.y + this.height > other.y
+        );
     }
 
     draw(ctx) {
         ctx.save();
 
-        const scale = 1.5;
-        const spriteWidth = 32 * scale;
-
         if (this.facing === -1) {
             ctx.scale(-1, 1);
+        }
 
-            this.animator.drawFrame(
-                this.game.clockTick,
-                ctx,
-                -this.x - spriteWidth,
-                this.y,
-                scale
-            );
+        const drawX = this.facing === -1 ? -this.x - this.width : this.x;
+
+        if (this.animating) {
+            // Advance animation while moving
+            this.animator.drawFrame(this.game.clockTick, ctx, drawX, this.y, 1.5);
         } else {
-            this.animator.drawFrame(
-                this.game.clockTick,
-                ctx,
-                this.x,
-                this.y,
-                scale
-            );
+            // Stop on first frame when idle or in air
+            this.animator.drawFrame(0, ctx, drawX, this.y, 1.5);
         }
 
         ctx.restore();
