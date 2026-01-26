@@ -1,13 +1,14 @@
 class Background {
-    constructor(img) {
-        this.img = img; // Pass in preloaded image from main.js
+    constructor(game) {
+        this.game = game;
+        this.bg = ASSET_MANAGER.getAsset("./Assets/RockBG.png");
     }
 
     update() {
-        // Static background
+
     }
 
     draw(ctx) {
-        ctx.drawImage(this.img, 0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(this.bg, 0, 0, ctx.canvas.width, ctx.canvas.height);
     }
 }
