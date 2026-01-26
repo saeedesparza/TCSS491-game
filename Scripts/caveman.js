@@ -29,12 +29,12 @@ class Caveman {
         let dx = 0;
 
         
-        if (this.game.isKeyPressed("a")) {
+        if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             dx -= 1;
             this.facing = 1;
         }
 
-        if (this.game.isKeyPressed("d")) {
+        if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
             dx += 1;
             this.facing = -1;
         }
