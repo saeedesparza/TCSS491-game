@@ -5,7 +5,6 @@ class Platform {
         this.width = width;
         this.height = height;
 
-        // 96x32 spritesheet, tiles are 32x32
         this.tileSize = 32;
         this.tileIndex = tileIndex;
 
@@ -13,7 +12,7 @@ class Platform {
     }
 
     update() {
-        // static platform
+
     }
 
     draw(ctx) {
@@ -22,10 +21,10 @@ class Platform {
         for (let i = 0; i < tilesAcross; i++) {
             ctx.drawImage(
                 this.spritesheet,
-                this.tileIndex * this.tileSize, 0, // source X,Y
-                this.tileSize, this.tileSize,      // source W,H
-                this.x + i * this.tileSize, this.y, // dest X,Y
-                this.tileSize, this.tileSize        // dest W,H
+                this.tileIndex * this.tileSize, 0,
+                this.tileSize, this.tileSize,
+                this.x + i * this.tileSize, this.y,
+                this.tileSize, this.tileSize
             );
         }
     }
