@@ -2,6 +2,7 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
+ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
 ASSET_MANAGER.queueDownload("./Assets/spritesheet_caveman.png");
 
 
