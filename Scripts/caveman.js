@@ -104,7 +104,7 @@ class Caveman {
             
             this.animator.drawFrame(this.game.clockTick, ctx, drawX, this.y, 1.5);
         } else {
-            // Stop on first frame when idle or in air
+           
             this.animator.drawFrame(0, ctx, drawX, this.y, 1.5);
         }
 
