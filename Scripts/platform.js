@@ -1,6 +1,9 @@
 class Platform {
     constructor(x, y, width, height) {
-        Object.assign(this, { x, y, width, height });
+        this.animator = new Animator(
+            ASSET_MANAGER.getAsset("./Assets/blocks_prev.png"),
+            0, 0, 32, 32, 16, 0.034, 0, true, true
+        );
     }
 
     update() {
