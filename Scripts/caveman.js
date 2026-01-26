@@ -28,7 +28,7 @@ class Caveman {
     update() {
         let dx = 0;
 
-        // Horizontal movement input
+        
         if (this.game.isKeyPressed("a")) {
             dx -= 1;
             this.facing = 1;
@@ -39,7 +39,7 @@ class Caveman {
             this.facing = -1;
         }
 
-        // Jump input
+        
         if (this.game.isKeyPressed(" ") && this.onGround) {
             this.velocityY = -this.jumpStrength;
             this.onGround = false;
@@ -47,20 +47,20 @@ class Caveman {
 
         const dt = this.game.clockTick;
 
-        // Apply horizontal movement
+        
         this.x += dx * this.speed * dt;
 
-        // Apply gravity
+        
         this.velocityY += this.gravity * dt;
         this.y += this.velocityY * dt;
 
-        // Handle collisions with platforms
+        
         this.handleCollisions();
 
-        // Decide whether to animate: only if moving and on ground
+        
         this.animating = this.onGround && dx !== 0;
 
-        // Keep within canvas bounds
+        
         const canvas = this.game.ctx.canvas;
         this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
     }
@@ -72,7 +72,7 @@ class Caveman {
             if (!(entity instanceof Platform)) continue;
 
             if (this.collide(entity)) {
-                // Landing on platform
+                
                 if (this.velocityY > 0) {
                     this.y = entity.y - this.height;
                     this.velocityY = 0;
@@ -101,7 +101,7 @@ class Caveman {
         const drawX = this.facing === -1 ? -this.x - this.width : this.x;
 
         if (this.animating) {
-            // Advance animation while moving
+            
             this.animator.drawFrame(this.game.clockTick, ctx, drawX, this.y, 1.5);
         } else {
             // Stop on first frame when idle or in air

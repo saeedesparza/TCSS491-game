@@ -10,8 +10,8 @@ ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
 
-
-	gameEngine.addEntity(new Platform(0, 700, 1024, 50));
+	gameEngine.addEntity(new Platform(0, 300, 300, 20));
+	gameEngine.addEntity(new Platform(0, 718, 1024, 50));
 	gameEngine.addEntity(new Caveman(gameEngine));
 
 	gameEngine.init(ctx);
