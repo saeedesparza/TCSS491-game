@@ -5,90 +5,112 @@ class Caveman {
         this.x = 25;
         this.y = 25;
 
-        this.width = 32 * 1.5;
-        this.height = 32 * 1.5;
+        this.width = 32 * 1.27;
+        this.height = 32 * 1.27;
 
-        this.facing = -1;
+        this.facing = 1; // 1 = right, -1 = left
         this.speed = 300;
 
-        
-        this.velocityY = 0;
-        this.gravity = 2000;      
+        this.velocity = { x: 0, y: 0 };
+        this.gravity = 2000;
         this.jumpStrength = 700;
         this.onGround = false;
 
-        
-        this.animator = new Animator(
+        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
+
+        // WALK animation
+        this.walkAnimator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"),
             0, 0, 32, 32, 16, 0.034, 0, false, true
         );
-        this.animating = false;  
+
+        // IDLE animation (single frame)
+        this.idleAnimator = new Animator(
+            ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman_idle.png"),
+            0, 0, 15, 31, 1, 1, 0, false, true
+        );
+
+        this.currentAnimator = this.idleAnimator;
     }
 
     update() {
-        let dx = 0;
+        const TICK = this.game.clockTick;
+        let moving = false;
 
-        
+        // ---- INPUT ----
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
-            dx -= 1;
+            this.velocity.x = -this.speed;
             this.facing = 1;
+            moving = true;
         }
-
-        if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
-            dx += 1;
+        else if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
+            this.velocity.x = this.speed;
             this.facing = -1;
+            moving = true;
+        }
+        else {
+            this.velocity.x = 0;
         }
 
-        
         if (this.game.isKeyPressed(" ") && this.onGround) {
-            this.velocityY = -this.jumpStrength;
+            this.velocity.y = -this.jumpStrength;
             this.onGround = false;
         }
 
-        const dt = this.game.clockTick;
+        // ---- PHYSICS ----
+        this.velocity.y += this.gravity * TICK;
 
-        
-        this.x += dx * this.speed * dt;
+        // ---- MOVE X ----
+        this.x += this.velocity.x * TICK;
+        this.boundingBox.update(this.x + 8, this.y + 4);
+        this.handleHorizontalCollisions();
 
-        
-        this.velocityY += this.gravity * dt;
-        this.y += this.velocityY * dt;
+        // ---- MOVE Y ----
+        this.y += this.velocity.y * TICK;
+        this.boundingBox.update(this.x + 8, this.y + 4);
+        this.handleVerticalCollisions();
 
-        
-        this.handleCollisions();
-
-        
-        this.animating = this.onGround && dx !== 0;
-
-        
-        const canvas = this.game.ctx.canvas;
-        this.x = Math.max(0, Math.min(this.x, canvas.width - this.width));
+        // ---- ANIMATION STATE ----
+        this.currentAnimator = moving ? this.walkAnimator : this.idleAnimator;
     }
 
-    handleCollisions() {
+    handleHorizontalCollisions() {
+        for (const entity of this.game.entities) {
+            if (!(entity instanceof Platform)) continue;
+
+            if (this.boundingBox.collide(entity.boundingBox)) {
+                if (this.velocity.x > 0) {
+                    this.x = entity.boundingBox.left - this.boundingBox.width - 8;
+                } else if (this.velocity.x < 0) {
+                    this.x = entity.boundingBox.right - 8;
+                }
+
+                this.velocity.x = 0;
+                this.boundingBox.update(this.x + 8, this.y + 4);
+            }
+        }
+    }
+
+    handleVerticalCollisions() {
         this.onGround = false;
 
         for (const entity of this.game.entities) {
             if (!(entity instanceof Platform)) continue;
 
-            if (this.collide(entity)) {
-                
-                if (this.velocityY > 0) {
-                    this.y = entity.y - this.height;
-                    this.velocityY = 0;
+            if (this.boundingBox.collide(entity.boundingBox)) {
+                if (this.velocity.y > 0) {
+                    this.y = entity.boundingBox.top - this.boundingBox.height - 4;
+                    this.velocity.y = 0;
                     this.onGround = true;
                 }
+                else if (this.velocity.y < 0) {
+                    this.y = entity.boundingBox.bottom - 4;
+                    this.velocity.y = 0;
+                }
+
+                this.boundingBox.update(this.x + 8, this.y + 4);
             }
         }
-    }
-
-    collide(other) {
-        return (
-            this.x < other.x + other.width &&
-            this.x + this.width > other.x &&
-            this.y < other.y + other.height &&
-            this.y + this.height > other.y
-        );
     }
 
     draw(ctx) {
@@ -98,15 +120,17 @@ class Caveman {
             ctx.scale(-1, 1);
         }
 
-        const drawX = this.facing === -1 ? -this.x - this.width : this.x;
+        const drawX = this.facing === -1
+            ? -this.x - this.width
+            : this.x;
 
-        if (this.animating) {
-            
-            this.animator.drawFrame(this.game.clockTick, ctx, drawX, this.y, 1.5);
-        } else {
-           
-            this.animator.drawFrame(0, ctx, drawX, this.y, 1.5);
-        }
+        this.currentAnimator.drawFrame(
+            this.game.clockTick,
+            ctx,
+            drawX,
+            this.y,
+            1.5
+        );
 
         ctx.restore();
     }
