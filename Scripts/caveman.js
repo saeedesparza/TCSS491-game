@@ -10,6 +10,7 @@ class Caveman {
 
         this.facing = 1; // 1 = right, -1 = left
         this.speed = 300;
+        this.life = true;
 
         this.velocity = { x: 0, y: 0 };
         this.gravity = 2000;
@@ -95,6 +96,15 @@ class Caveman {
         this.onGround = false;
 
         for (const entity of this.game.entities) {
+            if (entity instanceof Spikes || entity instanceof SpikesUD) {
+                if (this.boundingBox.collide(entity.boundingBox)) {
+                    this.life = false;
+                    this.x = 25;
+                    this.y = 25;
+                    this.velocity = { x: 0, y: 0 };
+                    this.boundingBox.update(this.x + 8, this.y + 4);
+                }
+            }
             if (!(entity instanceof Platform)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {

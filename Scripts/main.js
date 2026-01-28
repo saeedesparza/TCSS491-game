@@ -14,7 +14,7 @@ ASSET_MANAGER.downloadAll(() => {
     const ctx = canvas.getContext("2d");
    
 	gameEngine.addEntity(new Platform(0, 734, 1024, 32));
-	gameEngine.addEntity(new Spikes(0, 723, 1024));
+	gameEngine.addEntity(new Spikes(0, 723, 1024, 15));
 
     gameEngine.addEntity(new Platform(0, 500, 200, 32));
     gameEngine.addEntity(new Platform(250, 400, 125, 32));
@@ -25,7 +25,7 @@ ASSET_MANAGER.downloadAll(() => {
     gameEngine.addEntity(new Platform(0, 736, 1024, 32));
 
 	gameEngine.addEntity(new Platform(250, 300, 125, 32));
-	gameEngine.addEntity(new SpikesUD(254, 330, 120));
+	gameEngine.addEntity(new SpikesUD(254, 330, 120, 15));
 
     gameEngine.addEntity(new Caveman(gameEngine));
 

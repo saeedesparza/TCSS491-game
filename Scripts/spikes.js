@@ -9,10 +9,11 @@ class Spikes {
         this.tileIndex = tileIndex;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/Spikes.png");
+        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
     }
 
     update() {
-
+        this.boundingBox.update(this.x, this.y);
     }
 
     draw(ctx) {
