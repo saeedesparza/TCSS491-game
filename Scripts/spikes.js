@@ -5,11 +5,12 @@ class Spikes {
         this.width = width;
         this.height = height;
 
-        this.tileSize = 15;
+        this.tileWidth = 15;
+        this.tileHeight = 11;
         this.tileIndex = tileIndex;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/Spikes.png");
-        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.tileHeight);
     }
 
     update() {
@@ -17,15 +18,15 @@ class Spikes {
     }
 
     draw(ctx) {
-        const tilesAcross = Math.ceil(this.width / this.tileSize);
+        const tilesAcross = Math.ceil(this.width / this.tileWidth);
 
         for (let i = 0; i < tilesAcross; i++) {
             ctx.drawImage(
                 this.spritesheet,
-                this.tileIndex * this.tileSize, 0,
-                this.tileSize, this.tileSize,
-                this.x + i * this.tileSize, this.y,
-                this.tileSize, this.tileSize
+                this.tileIndex * this.tileWidth, 0,
+                this.tileWidth, this.tileHeight,
+                this.x + i * this.tileWidth, this.y,
+                this.tileWidth, this.tileHeight
             );
         }
     }

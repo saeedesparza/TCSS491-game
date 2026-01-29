@@ -25,7 +25,7 @@ ASSET_MANAGER.downloadAll(() => {
     gameEngine.addEntity(new Platform(0, 736, 1024, 32));
 
 	gameEngine.addEntity(new Platform(250, 300, 125, 32));
-	gameEngine.addEntity(new SpikesUD(254, 330, 120, 15));
+	gameEngine.addEntity(new SpikesUD(254, 330, 120, 11));
 
     gameEngine.addEntity(new Caveman(gameEngine));
 
