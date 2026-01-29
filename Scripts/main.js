@@ -29,7 +29,9 @@ ASSET_MANAGER.downloadAll(() => {
 
     gameEngine.addEntity(new Caveman(gameEngine));
 
-    gameEngine.addEntity(new Torch(gameEngine));
+    gameEngine.addEntity(new Torch(gameEngine, 180, 100));
+    gameEngine.addEntity(new Torch(gameEngine, 496, 100));
+    gameEngine.addEntity(new Torch(gameEngine, 808, 100));
 
     gameEngine.init(ctx);
     gameEngine.start();
