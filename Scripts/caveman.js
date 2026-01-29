@@ -5,8 +5,13 @@ class Caveman {
         this.x = 25;
         this.y = 25;
 
-        this.width = 32 * 1.27;
-        this.height = 32 * 1.27;
+        this.spriteWidth = 23;
+        this.spriteHeight = 30;
+        this.drawScale = 1.5;
+
+        // Bounding box dimensions match the actual drawn size (actual sprite * scale)
+        this.width = this.spriteWidth * this.drawScale;
+        this.height = this.spriteHeight * this.drawScale;
 
         this.facing = 1; // 1 = right, -1 = left
         this.speed = 300;
@@ -63,12 +68,12 @@ class Caveman {
 
         // ---- MOVE X ----
         this.x += this.velocity.x * TICK;
-        this.boundingBox.update(this.x + 8, this.y + 4);
+        this.boundingBox.update(this.x, this.y);
         this.handleHorizontalCollisions();
 
         // ---- MOVE Y ----
         this.y += this.velocity.y * TICK;
-        this.boundingBox.update(this.x + 8, this.y + 4);
+        this.boundingBox.update(this.x, this.y);
         this.handleVerticalCollisions();
 
         // ---- ANIMATION STATE ----
@@ -80,14 +85,20 @@ class Caveman {
             if (!(entity instanceof Platform)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
-                if (this.velocity.x > 0) {
-                    this.x = entity.boundingBox.left - this.boundingBox.width - 8;
-                } else if (this.velocity.x < 0) {
-                    this.x = entity.boundingBox.right - 8;
+                // Determine which side to push out from
+                const overlapLeft = this.boundingBox.right - entity.boundingBox.left;
+                const overlapRight = entity.boundingBox.right - this.boundingBox.left;
+
+                if (overlapLeft < overlapRight) {
+                    // Colliding from the left side
+                    this.x = entity.boundingBox.left - this.boundingBox.width;
+                } else {
+                    // Colliding from the right side
+                    this.x = entity.boundingBox.right;
                 }
 
                 this.velocity.x = 0;
-                this.boundingBox.update(this.x + 8, this.y + 4);
+                this.boundingBox.update(this.x, this.y);
             }
         }
     }
@@ -102,23 +113,28 @@ class Caveman {
                     this.x = 25;
                     this.y = 25;
                     this.velocity = { x: 0, y: 0 };
-                    this.boundingBox.update(this.x + 8, this.y + 4);
+                    this.boundingBox.update(this.x, this.y);
                 }
             }
             if (!(entity instanceof Platform)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
-                if (this.velocity.y > 0) {
-                    this.y = entity.boundingBox.top - this.boundingBox.height - 4;
+                // Determine which side to push out from
+                const overlapTop = this.boundingBox.bottom - entity.boundingBox.top;
+                const overlapBottom = entity.boundingBox.bottom - this.boundingBox.top;
+
+                if (overlapTop < overlapBottom) {
+                    // Colliding from the top (caveman is above platform)
+                    this.y = entity.boundingBox.top - this.boundingBox.height;
                     this.velocity.y = 0;
                     this.onGround = true;
-                }
-                else if (this.velocity.y < 0) {
-                    this.y = entity.boundingBox.bottom - 4;
+                } else {
+                    // Colliding from the bottom (caveman is below platform)
+                    this.y = entity.boundingBox.bottom;
                     this.velocity.y = 0;
                 }
 
-                this.boundingBox.update(this.x + 8, this.y + 4);
+                this.boundingBox.update(this.x, this.y);
             }
         }
     }

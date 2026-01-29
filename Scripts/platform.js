@@ -8,6 +8,7 @@ class Platform {
         this.tileSize = 32;
         this.tileIndex = tileIndex;
 
+        // Bounding box matches the specified platform dimensions
         this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/blocks_prev.png");
