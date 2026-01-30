@@ -25,11 +25,13 @@ class Caveman {
         this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
 
         // WALK animation
+        // WALK animation
         this.walkAnimator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman.png"),
             0, 0, 32, 32, 16, 0.034, 0, false, true
         );
 
+        // IDLE animation (single frame)
         // IDLE animation (single frame)
         this.idleAnimator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman_idle.png"),
@@ -43,6 +45,7 @@ class Caveman {
         const TICK = this.game.clockTick;
         let moving = false;
 
+        // ---- INPUT ----
         // ---- INPUT ----
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
@@ -67,22 +70,25 @@ class Caveman {
         this.velocity.y += this.gravity * TICK;
 
         // ---- MOVE X ----
+        // ---- MOVE X ----
         this.x += this.velocity.x * TICK;
         this.boundingBox.update(this.x, this.y);
         this.handleHorizontalCollisions();
 
+        // ---- MOVE Y ----
         // ---- MOVE Y ----
         this.y += this.velocity.y * TICK;
         this.boundingBox.update(this.x, this.y);
         this.handleVerticalCollisions();
 
         // ---- ANIMATION STATE ----
+        // ---- ANIMATION STATE ----
         this.currentAnimator = moving ? this.walkAnimator : this.idleAnimator;
     }
 
     handleHorizontalCollisions() {
         for (const entity of this.game.entities) {
-            if (!(entity instanceof Platform)) continue;
+            if (!(entity instanceof Platform || entity instanceof Border)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
                 // Determine which side to push out from
@@ -110,8 +116,8 @@ class Caveman {
             if (entity instanceof Spikes || entity instanceof SpikesUD) {
                 if (this.boundingBox.collide(entity.boundingBox)) {
                     this.life = false;
-                    this.x = 25;
-                    this.y = 25;
+                    this.x = 50;
+                    this.y = 400;
                     this.velocity = { x: 0, y: 0 };
                     this.boundingBox.update(this.x, this.y);
                 }
@@ -119,17 +125,17 @@ class Caveman {
             if (!(entity instanceof Platform)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
-                // Determine which side to push out from
+                
                 const overlapTop = this.boundingBox.bottom - entity.boundingBox.top;
                 const overlapBottom = entity.boundingBox.bottom - this.boundingBox.top;
 
                 if (overlapTop < overlapBottom) {
-                    // Colliding from the top (caveman is above platform)
+                    
                     this.y = entity.boundingBox.top - this.boundingBox.height;
                     this.velocity.y = 0;
                     this.onGround = true;
                 } else {
-                    // Colliding from the bottom (caveman is below platform)
+                    
                     this.y = entity.boundingBox.bottom;
                     this.velocity.y = 0;
                 }

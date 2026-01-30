@@ -13,6 +13,12 @@ ASSET_MANAGER.downloadAll(() => {
     const canvas = document.getElementById("gameWorld");
     const ctx = canvas.getContext("2d");
    
+	// Add screen borders (1 pixel thick)
+	gameEngine.addEntity(new Border(0, 0, 1024, 1));      // Top border
+	gameEngine.addEntity(new Border(0, 0, 1, 768));       // Left border
+	gameEngine.addEntity(new Border(1023, 0, 1, 768));    // Right border
+	gameEngine.addEntity(new Border(0, 767, 1024, 1));    // Bottom border
+
 	gameEngine.addEntity(new Platform(0, 734, 1024, 32));
 	gameEngine.addEntity(new Spikes(0, 723, 1024, 15));
 
@@ -24,14 +30,15 @@ ASSET_MANAGER.downloadAll(() => {
     gameEngine.addEntity(new Platform(874, 450, 150, 32));
     gameEngine.addEntity(new Platform(0, 736, 1024, 32));
 
-	gameEngine.addEntity(new Platform(250, 300, 125, 32));
-	gameEngine.addEntity(new SpikesUD(254, 330, 120, 11));
+	gameEngine.addEntity(new Platform(250, 294, 125, 32));
+	gameEngine.addEntity(new SpikesUD(254, 324, 120, 11));
+    
 
     gameEngine.addEntity(new Caveman(gameEngine));
 
-    gameEngine.addEntity(new Torch(gameEngine, 180, 100));
-    gameEngine.addEntity(new Torch(gameEngine, 496, 100));
-    gameEngine.addEntity(new Torch(gameEngine, 808, 100));
+    gameEngine.addEntity(new Torch(gameEngine, 113, 18));
+    gameEngine.addEntity(new Torch(gameEngine, 470, 18));
+    gameEngine.addEntity(new Torch(gameEngine, 870, 18));
 
     gameEngine.init(ctx);
     gameEngine.start();
