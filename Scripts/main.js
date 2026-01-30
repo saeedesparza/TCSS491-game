@@ -13,11 +13,11 @@ ASSET_MANAGER.downloadAll(() => {
     const canvas = document.getElementById("gameWorld");
     const ctx = canvas.getContext("2d");
    
-	// Add screen borders (1 pixel thick)
-	gameEngine.addEntity(new Border(0, 0, 1024, 1));      // Top border
-	gameEngine.addEntity(new Border(0, 0, 1, 768));       // Left border
-	gameEngine.addEntity(new Border(1023, 0, 1, 768));    // Right border
-	gameEngine.addEntity(new Border(0, 767, 1024, 1));    // Bottom border
+	
+	gameEngine.addEntity(new Border(0, 0, 1024, 1));      
+	gameEngine.addEntity(new Border(0, 0, 1, 768));       
+	gameEngine.addEntity(new Border(1023, 0, 1, 768));    
+	gameEngine.addEntity(new Border(0, 767, 1024, 1));    
 
 	gameEngine.addEntity(new Platform(0, 734, 1024, 32));
 	gameEngine.addEntity(new Spikes(0, 723, 1024, 15));
