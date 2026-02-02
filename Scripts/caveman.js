@@ -1,6 +1,7 @@
 class Caveman {
-    constructor(game) {
+    constructor(game, sceneManager) {
         this.game = game;
+        this.sceneManager = sceneManager || null;
 
         this.x = 25;
         this.y = 25;
@@ -9,7 +10,7 @@ class Caveman {
         this.spriteHeight = 30;
         this.drawScale = 1.5;
 
-        // Bounding box dimensions match the actual drawn size (actual sprite * scale)
+        // Bounding box dimensions match the actual drawn size
         this.width = this.spriteWidth * this.drawScale;
         this.height = this.spriteHeight * this.drawScale;
 
@@ -43,7 +44,6 @@ class Caveman {
         const TICK = this.game.clockTick;
         let moving = false;
 
-        // ---- INPUT ----
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
             this.facing = 1;
@@ -63,20 +63,23 @@ class Caveman {
             this.onGround = false;
         }
 
-        // ---- PHYSICS ----
         this.velocity.y += this.gravity * TICK;
 
-        // ---- MOVE X ----
         this.x += this.velocity.x * TICK;
         this.boundingBox.update(this.x, this.y);
         this.handleHorizontalCollisions();
 
-        // ---- MOVE Y ----
         this.y += this.velocity.y * TICK;
         this.boundingBox.update(this.x, this.y);
         this.handleVerticalCollisions();
 
-        // ---- ANIMATION STATE ----
+        // If the caveman touches the right edge of the canvas go to the next level
+        if (this.boundingBox.right >= this.game.ctx.canvas.width) {
+            if (this.sceneManager && typeof this.sceneManager.nextLevel === "function") {
+                this.sceneManager.nextLevel();
+            }
+        }
+
         this.currentAnimator = moving ? this.walkAnimator : this.idleAnimator;
     }
 

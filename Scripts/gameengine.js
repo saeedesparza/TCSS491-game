@@ -94,6 +94,25 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+
+        // Debug: draw bounding boxes for entities that have them
+        if (this.options.debugging || this.options.showBoundingBoxes) {
+            this.ctx.save();
+            this.ctx.strokeStyle = "red";
+            this.ctx.lineWidth = 1;
+            for (let i = 0; i < this.entities.length; i++) {
+                const e = this.entities[i];
+                if (e && e.boundingBox) {
+                    this.ctx.strokeRect(
+                        e.boundingBox.left,
+                        e.boundingBox.top,
+                        e.boundingBox.width,
+                        e.boundingBox.height
+                    );
+                }
+            }
+            this.ctx.restore();
+        }
     };
 
     update() {
@@ -111,6 +130,12 @@ class GameEngine {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
             }
+        }
+
+        // Process any queued scene transitions (do this here to avoid mutating
+        // the entities list while it's being iterated above)
+        if (this.sceneManager && this.sceneManager._queued) {
+            this.sceneManager.nextLevelImmediate();
         }
     };
 
