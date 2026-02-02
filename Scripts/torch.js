@@ -1,5 +1,3 @@
-// 256 x 128
-
 class Torch {
     constructor(game, x = 15, y = 15) {
         this.game = game;
