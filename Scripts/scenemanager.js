@@ -17,21 +17,23 @@ class SceneManager {
 
         this.game.addEntity(new Platform(0, 500, 200, 32));
         this.game.addEntity(new Platform(250, 400, 125, 32));
-        this.game.addEntity(new Platform(400, 550, 96, 32));
-        this.game.addEntity(new Platform(600, 650, 96, 32));
-        this.game.addEntity(new Platform(725, 550, 96, 32));
+
+        this.game.addEntity(new FakePlatform(650, 650, 96, 32));
+ 
+        this.game.addEntity(new MovingPlatform(this.game, 400, 550, 96, 32, 0, 100));
+
+        this.game.addEntity(new Platform(755, 550, 6, 32));
         this.game.addEntity(new Platform(874, 450, 150, 32));
         this.game.addEntity(new Platform(0, 736, 1024, 32));
 
         this.game.addEntity(new Platform(250, 300, 125, 32));
-        this.game.addEntity(new SpikesUD(254, 330, 120, 11));
+        this.game.addEntity(new SpikesUD(254, 330, 120, 11));//330
 
         // Vaughn this is passing the code to the scene manager so keep an eye on this
         this.game.addEntity(new Caveman(this.game, this));
-
-        this.game.addEntity(new Torch(this.game, 180, 100));
-        this.game.addEntity(new Torch(this.game, 496, 100));
-        this.game.addEntity(new Torch(this.game, 808, 100));
+        gameEngine.addEntity(new Torch(gameEngine, 58, 60));
+        gameEngine.addEntity(new Torch(gameEngine, 470, 60));
+        gameEngine.addEntity(new Torch(gameEngine, 870, 60));
     }
 
     loadNewLevel() {
@@ -65,6 +67,14 @@ class SceneManager {
         if (!this._queued) {
             this._queued = true;
             console.log("Level transition queued");
+        }
+    }
+
+    resetMovingPlatforms() {
+        for (const entity of this.game.entities) {
+            if (entity instanceof MovingPlatform) {
+                entity.reset();
+            }
         }
     }
 

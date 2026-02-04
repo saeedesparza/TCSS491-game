@@ -132,6 +132,18 @@ class GameEngine {
             }
         }
 
+        // Check if caveman died and reset moving platforms
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i] instanceof Caveman && !this.entities[i].life) {
+                if (this.sceneManager) {
+                    this.sceneManager.resetMovingPlatforms();
+                }
+                // Resurrect the caveman
+                this.entities[i].life = true;
+                break;
+            }
+        }
+
         // Process any queued scene transitions (do this here to avoid mutating
         // the entities list while it's being iterated above)
         if (this.sceneManager && this.sceneManager._queued) {

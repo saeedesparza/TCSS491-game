@@ -15,7 +15,7 @@ class Caveman {
         this.height = this.spriteHeight * this.drawScale;
 
         this.facing = 1; // 1 = right, -1 = left
-        this.speed = 300;
+        this.speed = 211;
         this.life = true;
 
         this.velocity = { x: 0, y: 0 };
@@ -90,6 +90,7 @@ class Caveman {
     handleHorizontalCollisions() {
         for (const entity of this.game.entities) {
             if (!(entity instanceof Platform || entity instanceof Border)) continue;
+            if (entity instanceof FakePlatform) continue;
             if (!(entity instanceof Platform || entity instanceof Border)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
@@ -127,6 +128,7 @@ class Caveman {
                 }
             }
             if (!(entity instanceof Platform)) continue;
+            if (entity instanceof FakePlatform && !entity.isMovingPlatform) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
                 
