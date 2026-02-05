@@ -174,5 +174,10 @@ class Caveman {
         );
 
         ctx.restore();
+
+        // shows coordinates for debugging
+        // ctx.fillStyle = "white";
+        // ctx.font = "16px Arial";
+        // ctx.fillText("X: " + Math.round(this.x) + " Y: " + Math.round(this.y), 10, 30);
     }
 }

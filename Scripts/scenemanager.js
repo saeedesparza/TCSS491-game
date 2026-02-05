@@ -27,7 +27,15 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 736, 1024, 32));
 
         this.game.addEntity(new Platform(250, 300, 125, 32));
-        this.game.addEntity(new SpikesUD(254, 330, 120, 11));//330
+        this.game.addEntity(new SpikesUD(254, 30, 120, 11));//330
+
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
+        // Right border split to create vertical gap between y=400 and y=450
+        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         // Vaughn this is passing the code to the scene manager so keep an eye on this
         this.game.addEntity(new Caveman(this.game, this));
@@ -57,6 +65,14 @@ class SceneManager {
         cav.y = 646;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
+
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
+        // Right border split to create vertical gap between y=400 and y=450
+        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         this.game.addEntity(new Torch(this.game, 40, 640));
         this.game.addEntity(new Torch(this.game, 300, 560));
