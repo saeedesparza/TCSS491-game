@@ -27,7 +27,7 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 736, 1024, 32));
 
         this.game.addEntity(new Platform(250, 300, 125, 32));
-        this.game.addEntity(new SpikesUD(254, 30, 120, 11));//330
+        this.game.addEntity(new SpikesUD(254, 330, 120, 11));//330
 
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
