@@ -1,5 +1,5 @@
 const gameEngine = new GameEngine();
-// gameEngine.options.showBoundingBoxes = true; // commented out to disable bounding-box overlay
+gameEngine.options.showBoundingBoxes = true; // commented out to disable bounding-box overlay
 const ASSET_MANAGER = new AssetManager();
 
 

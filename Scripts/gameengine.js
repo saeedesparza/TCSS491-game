@@ -95,7 +95,7 @@ class GameEngine {
             this.entities[i].draw(this.ctx, this);
         }
 
-        /* Debug: draw bounding boxes for entities that have them
+        // Debug: draw bounding boxes for entities that have them
         if (this.options.debugging || this.options.showBoundingBoxes) {
             this.ctx.save();
             this.ctx.strokeStyle = "red";
@@ -113,7 +113,7 @@ class GameEngine {
             }
             this.ctx.restore();
         }
-        */
+        
     };
 
     update() {
