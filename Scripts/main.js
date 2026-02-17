@@ -15,10 +15,30 @@ ASSET_MANAGER.downloadAll(() => {
     const ctx = canvas.getContext("2d");
 
     const sceneManager = new SceneManager(gameEngine);
-
     gameEngine.sceneManager = sceneManager;
-    sceneManager.loadTutorialLevel();
 
-    gameEngine.init(ctx);
-    gameEngine.start();
+    // Show menu overlay at start
+    sceneManager.showMenu();
+
+    // Prevent game from starting until Start is clicked
+    let gameStarted = false;
+
+    // Button event listeners
+    document.getElementById('startGameBtn').onclick = function() {
+        if (!gameStarted) {
+            sceneManager.hideMenu();
+            sceneManager.loadTutorialLevel();
+            gameEngine.init(ctx);
+            gameEngine.start();
+            gameStarted = true;
+        }
+    };
+    document.getElementById('quitGameBtn').onclick = function() {
+        window.close();
+        // If window.close() fails (most browsers), just hide the menu and freeze
+        sceneManager.hideMenu();
+        canvas.style.display = 'none';
+        document.body.innerHTML = '<h1 style="color:white;text-align:center;margin-top:20vh;">Thanks for playing!</h1>';
+        document.body.style.background = '#111';
+    };
 });
