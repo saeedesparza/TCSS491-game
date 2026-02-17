@@ -37,7 +37,7 @@ class SceneManager {
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         // Right border split to create vertical gap between y=400 and y=450
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 0, 1, 380)); // Right border top
         this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
@@ -62,10 +62,10 @@ class SceneManager {
 
         this.game.addEntity(new Platform(850, 420, 100, 32));
 
-        this.game.addEntity(new SpikesUD(470, 520, 40, 11));
+        this.game.addEntity(new Spikes(470, 520, 40, 11));
 
         const cav = new Caveman(this.game, this);
-        cav.x = 30;
+        cav.x = 60;
         cav.y = 646;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
@@ -73,7 +73,7 @@ class SceneManager {
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         // Right border split to create vertical gap between y=400 and y=450
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 0, 1, 0)); // Right border top
         this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
@@ -108,7 +108,7 @@ class SceneManager {
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         // Right border split to create vertical gap between y=400 and y=450
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 0, 1, 0)); // Right border top
         this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
