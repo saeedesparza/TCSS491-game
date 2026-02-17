@@ -6,7 +6,8 @@ class SceneManager {
         this.levels = [
             { name: 'tutorial', loader: () => this.loadTutorialLevel() },
             { name: 'level one', loader: () => this.loadLevelOne() },
-            { name: 'level two', loader: () => this.loadThirdLevel() }
+            { name: 'level two', loader: () => this.loadLevelTwo() },
+            { name: 'level three', loader: () => this.loadLevelThree}
         ];
     }
 
@@ -25,7 +26,7 @@ class SceneManager {
 
         this.game.addEntity(new FakePlatform(650, 650, 96, 32));
  
-        this.game.addEntity(new MovingPlatform(this.game, 400, 550, 96, 32, 0, 100));
+        this.game.addEntity(new MovingPlatform(this.game, 400, 550, 96, 32, 0, 100)); //REVISE THIS
 
         this.game.addEntity(new Platform(755, 550, 20, 32));
         this.game.addEntity(new Platform(874, 450, 150, 32));
@@ -37,7 +38,7 @@ class SceneManager {
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         // Right border split to create vertical gap between y=400 and y=450
-        this.game.addEntity(new Border(1023, 0, 1, 380)); // Right border top
+        this.game.addEntity(new Border(1023, 0, 1, 0)); // Right border top
         this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
@@ -100,7 +101,7 @@ class SceneManager {
         this.game.addEntity(new SpikesUD(470, 520, 40, 11));
 
         const cav = new Caveman(this.game, this);
-        cav.x = 30;
+        cav.x = 60;
         cav.y = 646;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
@@ -126,6 +127,12 @@ class SceneManager {
         this.game.addEntity(new Border(1023, 450, 1, 318));
         this.game.addEntity(new Border(0, 767, 1024, 1));
         this.game.addEntity(new Border(0, 0, 1024, 1));
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 60;
+        cav.y = 646;
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
 
         //this.game.addEntity(new Platform())
     }
