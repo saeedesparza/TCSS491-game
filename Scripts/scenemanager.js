@@ -7,12 +7,35 @@ class SceneManager {
             { name: 'tutorial', loader: () => this.loadTutorialLevel() },
             { name: 'level one', loader: () => this.loadLevelOne() },
             { name: 'level two', loader: () => this.loadLevelTwo() },
-            { name: 'level three', loader: () => this.loadLevelThree}
+            { name: 'level three', loader: () => this.loadLevelThree }
         ];
+        this.menuActive = true;
+        // Do not load any level here; wait for Start button
+    }
+    showMenu() {
+        const overlay = document.getElementById('mainMenuOverlay');
+        if (overlay) overlay.style.display = 'flex';
+        this.menuActive = true;
+    }
+
+    hideMenu() {
+        const overlay = document.getElementById('mainMenuOverlay');
+        if (overlay) overlay.style.display = 'none';
+        this.menuActive = false;
     }
 
     clearEntities() {
         this.game.entities = [];
+    }
+
+    updateHintArrow(direction) {
+        const hintArrowImg = document.getElementById('hintArrowImg');
+        if (!hintArrowImg) return;
+        if (direction === 'left') {
+            hintArrowImg.src = 'Assets/arrowleft.png';
+        } else {
+            hintArrowImg.src = 'Assets/arrowright.png';
+        }
     }
 
     loadTutorialLevel() {
@@ -47,6 +70,7 @@ class SceneManager {
         gameEngine.addEntity(new Torch(gameEngine, 58, 60));
         gameEngine.addEntity(new Torch(gameEngine, 470, 60));
         gameEngine.addEntity(new Torch(gameEngine, 870, 60));
+        this.updateHintArrow('right');
     }
 
     loadLevelOne() {
@@ -82,6 +106,7 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 40, 640));
         this.game.addEntity(new Torch(this.game, 300, 560));
         this.game.addEntity(new Torch(this.game, 760, 480));
+        this.updateHintArrow('right');
     }
 
     loadLevelTwo() {
@@ -117,6 +142,7 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 40, 640));
         this.game.addEntity(new Torch(this.game, 300, 560));
         this.game.addEntity(new Torch(this.game, 760, 480));
+        this.updateHintArrow('left');
     }
 
     loadLevelThree() {
@@ -133,8 +159,7 @@ class SceneManager {
         cav.y = 646;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
-
-        //this.game.addEntity(new Platform())
+        this.updateHintArrow('left');
     }
 
     nextLevel() {

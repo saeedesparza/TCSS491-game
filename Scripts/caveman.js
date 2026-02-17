@@ -22,6 +22,9 @@ class Caveman {
         this.gravity = 2000;
         this.jumpStrength = 700;
         this.onGround = false;
+        // Coyote time variables
+        this.coyoteTime = 0.1; // seconds
+        this.coyoteTimer = 0;
 
         // Bounding box offset allows the collision box to be positioned relative
         // to the sprite without changing the sprite's draw coordinates.
@@ -52,6 +55,8 @@ class Caveman {
     update() {
         const TICK = this.game.clockTick;
         let moving = false;
+        // Track previous onGround state for coyote time
+        const wasOnGround = this.onGround;
 
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
@@ -69,9 +74,11 @@ class Caveman {
             this.velocity.x = 0;
         }
 
-        if (this.game.isKeyPressed(" ") && this.onGround) {
+        // Coyote time: allow jump if onGround or within coyote window
+        if (this.game.isKeyPressed(" ") && (this.onGround || this.coyoteTimer > 0)) {
             this.velocity.y = -this.jumpStrength;
             this.onGround = false;
+            this.coyoteTimer = 0; // Reset after jump
         }
 
         this.velocity.y += this.gravity * TICK;
@@ -83,6 +90,16 @@ class Caveman {
         this.y += this.velocity.y * TICK;
         this.boundingBox.update(this.x + this.bboxOffsetX, this.y + this.bboxOffsetY);
         this.handleVerticalCollisions();
+
+        // Coyote time logic: if just left ground, start timer
+        if (!this.onGround && wasOnGround && this.velocity.y >= 0) {
+            this.coyoteTimer = this.coyoteTime;
+        } else if (this.onGround) {
+            this.coyoteTimer = this.coyoteTime;
+        } else if (this.coyoteTimer > 0) {
+            this.coyoteTimer -= TICK;
+            if (this.coyoteTimer < 0) this.coyoteTimer = 0;
+        }
 
         // If the caveman touches the right edge of the canvas go to the next level
         if (this.boundingBox.right >= this.game.ctx.canvas.width) {
