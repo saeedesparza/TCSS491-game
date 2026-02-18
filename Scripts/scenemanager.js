@@ -80,7 +80,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
-        cav.y = 689;//689
+        cav.y = 686;//689
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -117,8 +117,8 @@ class SceneManager {
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
-        cav.x = 25;//25
-        cav.y = 105;//105
+        cav.x = 25;
+        cav.y = 102;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -152,7 +152,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
-        cav.y = 355;
+        cav.y = 352;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -190,7 +190,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
-        cav.y = 355;//355
+        cav.y = 352;//355
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -218,7 +218,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 90;//90
-        cav.y = 689;//689
+        cav.y = 686;//689
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -256,7 +256,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 10;
-        cav.y = 689;
+        cav.y = 686;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
