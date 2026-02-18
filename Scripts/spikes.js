@@ -21,12 +21,16 @@ class Spikes {
         const tilesAcross = Math.ceil(this.width / this.tileWidth);
 
         for (let i = 0; i < tilesAcross; i++) {
+            const remainingWidth = this.width - i * this.tileWidth;
+            const drawWidth = Math.min(this.tileWidth, remainingWidth);
+            if (drawWidth <= 0) break;
+
             ctx.drawImage(
                 this.spritesheet,
                 this.tileIndex * this.tileWidth, 0,
-                this.tileWidth, this.tileHeight,
+                drawWidth, this.tileHeight,
                 this.x + i * this.tileWidth, this.y,
-                this.tileWidth, this.tileHeight
+                drawWidth, this.tileHeight
             );
         }
     }

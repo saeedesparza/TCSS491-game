@@ -20,12 +20,16 @@ class SpikesUD {
         const tilesAcross = Math.ceil(this.width / this.tileSize);
 
         for (let i = 0; i < tilesAcross; i++) {
+            const remainingWidth = this.width - i * this.tileSize;
+            const drawWidth = Math.min(this.tileSize, remainingWidth);
+            if (drawWidth <= 0) break;
+
             ctx.drawImage(
                 this.spritesheet,
                 this.tileIndex * this.tileSize, 0,
-                this.tileSize, this.tileSize,
+                drawWidth, this.tileSize,
                 this.x + i * this.tileSize, this.y,
-                this.tileSize, this.tileSize
+                drawWidth, this.tileSize
             );
         }
     }

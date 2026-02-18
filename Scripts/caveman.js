@@ -5,14 +5,23 @@ class Caveman {
 
         this.x = 25;
         this.y = 25;
+        this.spawnX = this.x;
+        this.spawnY = this.y;
+        this.spawnCaptured = false;
 
         this.spriteWidth = 23;
         this.spriteHeight = 30;
         this.drawScale = 1.5;
 
-        // Bounding box dimensions match the actual drawn size
+        // Drawn size
         this.width = this.spriteWidth * this.drawScale;
         this.height = this.spriteHeight * this.drawScale;
+
+        // Shrink the hitbox width by 40% and keep it centered on the sprite
+        this.bboxWidth = this.width * 0.6;
+        this.bboxHeight = this.height;
+        this.bboxOffsetX = (this.width - this.bboxWidth) / 2;
+        this.bboxOffsetY = 0;
 
         this.facing = 1; // 1 = right, -1 = left
         this.speed = 211;
@@ -23,7 +32,12 @@ class Caveman {
         this.jumpStrength = 700;
         this.onGround = false;
 
-        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.boundingBox = new BoundingBox(
+            this.x + this.bboxOffsetX,
+            this.y + this.bboxOffsetY,
+            this.bboxWidth,
+            this.bboxHeight
+        );
 
         // WALK animation
         // WALK animation
@@ -45,6 +59,12 @@ class Caveman {
     }
 
     update() {
+        if (!this.spawnCaptured) {
+            this.spawnX = this.x;
+            this.spawnY = this.y;
+            this.spawnCaptured = true;
+        }
+
         const TICK = this.game.clockTick;
         let moving = false;
 
@@ -70,11 +90,11 @@ class Caveman {
         this.velocity.y += this.gravity * TICK;
 
         this.x += this.velocity.x * TICK;
-        this.boundingBox.update(this.x, this.y);
+        this.updateBoundingBox();
         this.handleHorizontalCollisions();
 
         this.y += this.velocity.y * TICK;
-        this.boundingBox.update(this.x, this.y);
+        this.updateBoundingBox();
         this.handleVerticalCollisions();
 
         // If the caveman touches the right edge of the canvas go to the next level
@@ -100,14 +120,14 @@ class Caveman {
 
                 if (overlapLeft < overlapRight) {
                     // Colliding from the left side
-                    this.x = entity.boundingBox.left - this.boundingBox.width;
+                    this.x = entity.boundingBox.left - this.bboxOffsetX - this.bboxWidth;
                 } else {
                     // Colliding from the right side
-                    this.x = entity.boundingBox.right;
+                    this.x = entity.boundingBox.right - this.bboxOffsetX;
                 }
 
                 this.velocity.x = 0;
-                this.boundingBox.update(this.x, this.y);
+                this.updateBoundingBox();
             }
         }
     }
@@ -116,18 +136,16 @@ class Caveman {
         this.onGround = false;
 
         for (const entity of this.game.entities) {
-            if (entity instanceof Spikes || entity instanceof SpikesUD) {
+            if (entity instanceof Spikes || entity instanceof SpikesUD || entity instanceof SpikesLeft || entity instanceof SpikesRight) {
                 if (this.boundingBox.collide(entity.boundingBox)) {
                     this.life = false;
-                    this.x = 50;
-                    this.y = 400;
-                    this.x = 50;
-                    this.y = 400;
+                    this.x = this.spawnX;
+                    this.y = this.spawnY;
                     this.velocity = { x: 0, y: 0 };
-                    this.boundingBox.update(this.x, this.y);
+                    this.updateBoundingBox();
                 }
             }
-            if (!(entity instanceof Platform)) continue;
+            if (!(entity instanceof Platform || entity instanceof Border)) continue;
             if (entity instanceof FakePlatform && !entity.isMovingPlatform) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
@@ -139,19 +157,26 @@ class Caveman {
                 if (overlapTop < overlapBottom) {
                     
                     
-                    this.y = entity.boundingBox.top - this.boundingBox.height;
+                    this.y = entity.boundingBox.top - this.bboxOffsetY - this.bboxHeight;
                     this.velocity.y = 0;
                     this.onGround = true;
                 } else {
                     
                     
-                    this.y = entity.boundingBox.bottom;
+                    this.y = entity.boundingBox.bottom - this.bboxOffsetY;
                     this.velocity.y = 0;
                 }
 
-                this.boundingBox.update(this.x, this.y);
+                this.updateBoundingBox();
             }
         }
+    }
+
+    updateBoundingBox() {
+        this.boundingBox.update(
+            this.x + this.bboxOffsetX,
+            this.y + this.bboxOffsetY
+        );
     }
 
     draw(ctx) {
@@ -176,8 +201,8 @@ class Caveman {
         ctx.restore();
 
         // shows coordinates for debugging
-        // ctx.fillStyle = "white";
-        // ctx.font = "16px Arial";
-        // ctx.fillText("X: " + Math.round(this.x) + " Y: " + Math.round(this.y), 10, 30);
+        ctx.fillStyle = "white";
+         ctx.font = "16px Arial";
+         ctx.fillText("X: " + Math.round(this.x) + " Y: " + Math.round(this.y), 10, 30);
     }
 }
