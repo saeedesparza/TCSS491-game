@@ -11,7 +11,7 @@ class Caveman {
 
         this.spriteWidth = 16;
         this.spriteHeight = 32;
-        this.drawScale = 1.55;
+        this.drawScale = 1.5;
 
         // Drawn size
         this.width = this.spriteWidth * this.drawScale;
@@ -225,7 +225,7 @@ class Caveman {
         const originalHitW = this.width;
         const originalHitH = this.height;
 
-        const hitW = originalHitW - 2;
+        const hitW = originalHitW - 5;
         const hitH = originalHitH;
 
         const offsetX = (drawW - hitW) / 2;
