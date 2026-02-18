@@ -39,7 +39,7 @@ class SceneManager {
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;
-        cav.y = 455;
+        cav.y = 450;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -56,7 +56,6 @@ class SceneManager {
         this.game.addEntity(new SpikesLeft(115, 650, 15, 30));
         this.game.addEntity(new Platform(150, 550, 30, 32));
 
-
         this.game.addEntity(new Platform(0, 450, 115, 32));
         this.game.addEntity(new SpikesLeft(115, 450, 15, 30));
         this.game.addEntity(new Platform(150, 350, 30, 32));
@@ -66,7 +65,6 @@ class SceneManager {
         this.game.addEntity(new Platform(325, 350, 30, 32));
         this.game.addEntity(new FakePlatform(250, 250, 30, 32));
 
-
         this.game.addEntity(new MovingPlatform(this.game, 450, 350, 30, 32, 0, 62));
 
         this.game.addEntity(new Platform(0, 450, 0, 32));
@@ -75,16 +73,10 @@ class SceneManager {
         this.game.addEntity(new Platform(700, 430, 30, 32));
         this.game.addEntity(new Platform(824, 350, 200, 32));
 
-
-
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         this.game.addEntity(new Border(1023, 350, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
-
-
-
-
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
@@ -107,11 +99,9 @@ class SceneManager {
         this.game.addEntity(new FakePlatform(0, 550, 115, 32));
         this.game.addEntity(new Platform(175, 650, 115, 32));
 
-
         this.game.addEntity(new VerticalPlatform(165, 0, 32, 425, 0, 1));
         this.game.addEntity(new SpikesRight(150, 0, 15, 425));
         this.game.addEntity(new Platform(0, 450, 115, 32));
-
 
         this.game.addEntity(new Platform(400, 600, 115, 32));
         this.game.addEntity(new Spikes(410, 590, 90, 15));
@@ -121,19 +111,10 @@ class SceneManager {
 
         this.game.addEntity(new Platform(824, 435, 200, 32));
 
-
-
-
-        
-        
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         this.game.addEntity(new Border(1023, 435, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
-
-
-
-
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
@@ -158,7 +139,6 @@ class SceneManager {
         this.game.addEntity(new MovingPlatform(this.game, 600, 400, 30, 32, 0, 62));
         this.game.addEntity(new MovingPlatform(this.game, 750, 400, 30, 32, 0, 62));
         
-
         this.game.addEntity(new Platform(0, 400, 200, 32));
         
         this.game.addEntity(new Platform(974, 400, 125, 32));
@@ -186,7 +166,6 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 734, 1024, 32));
         this.game.addEntity(new Spikes(0, 723, 1024, 15));
 
-        
         this.game.addEntity(new Platform(0, 400, 125, 32));
         this.game.addEntity(new FakePlatform(200, 400, 100, 32));
 
@@ -250,8 +229,39 @@ class SceneManager {
     loadLevel7() {
         this.clearEntities();
 
-        this.gane.addEntity(new Platform(0, 734, 1024, 32));
-        this.game.addEntity(new Spikes(0, 723, 1024, 15));
+        // bottom platform
+        this.game.addEntity(new Platform(0, 734, 1024, 32));
+
+        // vertical jump platforms
+        this.game.addEntity(new Platform(100, 150, 32, 32));
+        this.game.addEntity(new Platform(100, 250, 32, 32));
+        this.game.addEntity(new Platform(100, 350, 32, 32));
+        this.game.addEntity(new Platform(100, 450, 32, 32));
+        this.game.addEntity(new Platform(100, 550, 32, 32));
+        this.game.addEntity(new Platform(100, 650, 32, 32));
+
+        // left wall with spikes
+        this.game.addEntity(new VerticalPlatform(0, 0, 32, 425, 0, 1));
+        this.game.addEntity(new SpikesLeft(30, 0, 15, 425));
+
+        this.game.addEntity(new Platform(598, 500, 115, 32));
+        this.game.addEntity(new Spikes(610, 490, 90, 15));
+
+        this.game.addEntity(new Platform(824, 435, 200, 32));
+
+        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
+        this.game.addEntity(new Border(1023, 435, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 10;
+        cav.y = 689;
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
+        this.game.addEntity(new Torch(this.game, 58, 60));
+        this.game.addEntity(new Torch(this.game, 470, 60));
+        this.game.addEntity(new Torch(this.game, 870, 60));
     }
     
 

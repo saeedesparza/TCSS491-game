@@ -3,7 +3,7 @@ gameEngine.options.showBoundingBoxes = true;
 const ASSET_MANAGER = new AssetManager();
 
 // Change this number to spawn in a different level (1 through 6)
-const STARTING_LEVEL = 5;
+const STARTING_LEVEL = 2;
 
 
 ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
@@ -48,6 +48,9 @@ ASSET_MANAGER.downloadAll(() => {
             break;
         case 6:
             sceneManager.loadLevel6();
+            break;
+        case 7:
+            sceneManager.loadLevel7();
             break;
         default:
             console.warn(`Invalid STARTING_LEVEL (${STARTING_LEVEL}); defaulting to level 1.`);

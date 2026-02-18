@@ -52,6 +52,7 @@ class Caveman {
     }
 
     update() {
+        // Initialize spawn point if not captured
         if (!this.spawnCaptured) {
             this.spawnX = this.x;
             this.spawnY = this.y;
@@ -63,39 +64,91 @@ class Caveman {
         // Track previous onGround state for coyote time
         const wasOnGround = this.onGround;
 
+        // Handle input for movement
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
             this.facing = 1;
-            //this.bboxOffsetX = 10;
             moving = true;
-        }
-        else if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
+        } else if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
             this.velocity.x = this.speed;
             this.facing = -1;
-            //this.bboxOffsetX = -10;
             moving = true;
-        }
-        else {
+        } else {
             this.velocity.x = 0;
         }
 
-        // Coyote time: allow jump if onGround or within coyote window
+        // Handle jump (coyote time)
         if (this.game.isKeyPressed(" ") && (this.onGround || this.coyoteTimer > 0)) {
             this.velocity.y = -this.jumpStrength;
             this.onGround = false;
-            this.coyoteTimer = 0; // Reset after jump
+            this.coyoteTimer = 0;
         }
 
+        // Apply gravity
         this.velocity.y += this.gravity * TICK;
 
+        // --- Horizontal movement and collision ---
+        const prevX = this.x;
         this.x += this.velocity.x * TICK;
         this.updateBoundingBox();
-        this.handleHorizontalCollisions();
+        let horizontalBlocked = false;
+        for (const entity of this.game.entities) {
+            if (!(entity instanceof Platform || entity instanceof Border)) continue;
+            if (entity instanceof FakePlatform) continue;
+            if (this.boundingBox.collide(entity.boundingBox)) {
+                // Block horizontal movement, revert x
+                this.x = prevX;
+                this.velocity.x = 0;
+                this.updateBoundingBox();
+                horizontalBlocked = true;
+                break;
+            }
+        }
 
+        // --- Vertical movement and collision ---
+        const prevY = this.y;
         this.y += this.velocity.y * TICK;
         this.updateBoundingBox();
-        this.handleVerticalCollisions();
+        this.onGround = false;
+        for (const entity of this.game.entities) {
+            // Handle spikes
+            if (entity instanceof Spikes || entity instanceof SpikesUD || entity instanceof SpikesLeft || entity instanceof SpikesRight) {
+                if (this.boundingBox.collide(entity.boundingBox)) {
+                    if (!this.spawnCaptured) {
+                        this.spawnX = this.x;
+                        this.spawnY = this.y;
+                        this.spawnCaptured = true;
+                    }
+                    this.life = false;
+                    this.x = this.spawnX ?? this.x;
+                    this.y = this.spawnY ?? this.y;
+                    this.velocity = { x: 0, y: 0 };
+                    this.updateBoundingBox();
+                }
+            }
+            // Handle platforms and borders
+            if (!(entity instanceof Platform || entity instanceof Border)) continue;
+            if (entity instanceof FakePlatform && !entity.isMovingPlatform) continue;
+            if (this.boundingBox.collide(entity.boundingBox)) {
+                const overlapTop = this.boundingBox.bottom - entity.boundingBox.top;
+                const overlapBottom = entity.boundingBox.bottom - this.boundingBox.top;
+                // Only land on top if falling from above
+                const prevBottom = prevY + this.boundingBox.height;
+                if (overlapTop < overlapBottom && prevBottom <= entity.boundingBox.top && this.velocity.y >= 0) {
+                    this.y = entity.boundingBox.top - this.boundingBox.height;
+                    this.velocity.y = 0;
+                    this.onGround = true;
+                    this.updateBoundingBox();
+                } else if (overlapTop >= overlapBottom && this.velocity.y < 0) {
+                    // Hitting head on bottom of platform
+                    this.y = entity.boundingBox.bottom;
+                    this.velocity.y = 0;
+                    this.updateBoundingBox();
+                }
+            }
+        }
 
+        // --- World bounds ---
         const minX = 0;
         const maxX = this.game.ctx.canvas.width - this.width;
         if (this.x < minX) {
@@ -108,7 +161,7 @@ class Caveman {
             this.updateBoundingBox();
         }
 
-        // Coyote time logic: if just left ground, start timer
+        // --- Coyote time logic ---
         if (!this.onGround && wasOnGround && this.velocity.y >= 0) {
             this.coyoteTimer = this.coyoteTime;
         } else if (this.onGround) {
@@ -118,8 +171,7 @@ class Caveman {
             if (this.coyoteTimer < 0) this.coyoteTimer = 0;
         }
 
-        // Advance level only after the caveman fully exits the right side.
-        // This avoids triggering while simply colliding with a 1px right border.
+        // --- Level progression ---
         if (this.boundingBox.left > this.game.ctx.canvas.width) {
             if (this.sceneManager && typeof this.sceneManager.nextLevel === "function") {
                 this.sceneManager.nextLevel();
@@ -127,92 +179,6 @@ class Caveman {
         }
 
         this.currentAnimator = moving ? this.walkAnimator : this.idleAnimator;
-    }
-
-    handleHorizontalCollisions() {
-        for (const entity of this.game.entities) {
-            if (!(entity instanceof Platform || entity instanceof Border)) continue;
-            if (entity instanceof FakePlatform) continue;
-            if (!(entity instanceof Platform || entity instanceof Border)) continue;
-
-            if (this.boundingBox.collide(entity.boundingBox)) {
-                const overlapX = Math.min(
-                    this.boundingBox.right - entity.boundingBox.left,
-                    entity.boundingBox.right - this.boundingBox.left
-                );
-                const overlapY = Math.min(
-                    this.boundingBox.bottom - entity.boundingBox.top,
-                    entity.boundingBox.bottom - this.boundingBox.top
-                );
-
-                if (overlapX <= 0 || overlapY <= 0) continue;
-
-                if (overlapX >= overlapY) {
-                    continue;
-                }
-
-                // Determine which side to push out from
-                const overlapLeft = this.boundingBox.right - entity.boundingBox.left;
-                const overlapRight = entity.boundingBox.right - this.boundingBox.left;
-
-                if (overlapLeft < overlapRight) {
-                    // Colliding from the left side
-                    this.x = entity.boundingBox.left - this.boundingBox.width;
-                } else {
-                    // Colliding from the right side
-                    this.x = entity.boundingBox.right;
-                }
-
-                this.velocity.x = 0;
-                this.updateBoundingBox();
-            }
-        }
-    }
-
-    handleVerticalCollisions() {
-        this.onGround = false;
-
-        for (const entity of this.game.entities) {
-            if (entity instanceof Spikes || entity instanceof SpikesUD || entity instanceof SpikesLeft || entity instanceof SpikesRight) {
-                if (this.boundingBox.collide(entity.boundingBox)) {
-                    if (!this.spawnCaptured) {
-                        this.spawnX = this.x;
-                        this.spawnY = this.y;
-                        this.spawnCaptured = true;
-                    }
-
-                    this.life = false;
-                    this.x = this.spawnX ?? this.x;
-                    this.y = this.spawnY ?? this.y;
-                    this.velocity = { x: 0, y: 0 };
-                    this.updateBoundingBox();
-                }
-            }
-            if (!(entity instanceof Platform || entity instanceof Border)) continue;
-            if (entity instanceof FakePlatform && !entity.isMovingPlatform) continue;
-
-            if (this.boundingBox.collide(entity.boundingBox)) {
-                
-                
-                const overlapTop = this.boundingBox.bottom - entity.boundingBox.top;
-                const overlapBottom = entity.boundingBox.bottom - this.boundingBox.top;
-
-                if (overlapTop < overlapBottom) {
-                    
-                    
-                    this.y = entity.boundingBox.top - this.boundingBox.height;
-                    this.velocity.y = 0;
-                    this.onGround = true;
-                } else {
-                    
-                    
-                    this.y = entity.boundingBox.bottom;
-                    this.velocity.y = 0;
-                }
-
-                this.updateBoundingBox();
-            }
-        }
     }
 
     updateBoundingBox() {
