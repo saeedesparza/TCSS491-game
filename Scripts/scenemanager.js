@@ -221,6 +221,31 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 870, 60));
     }
 
+    loadLevel6() {
+        this.clearEntities();
+
+        // TODO: build level 6 layout here
+        this.game.addEntity(new Platform(0, 734, 1024, 32));
+        this.game.addEntity(new Platform(0, 634, 800, 32));
+       
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
+        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 90;//90
+        cav.y = 689;//689
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
+        this.game.addEntity(new Torch(this.game, 58, 60));
+        this.game.addEntity(new Torch(this.game, 470, 60));
+        this.game.addEntity(new Torch(this.game, 870, 60));
+    }
+    
+
     nextLevel() {
         if (!this._queued) {
             this._queued = true;
@@ -247,6 +272,8 @@ class SceneManager {
             this.loadLevel4();
         } else if (this.currentLevel === 4) {
             this.loadLevel5();
+        } else if (this.currentLevel === 5) {
+            this.loadLevel6();
         } else {
             // loops back to level 1
             this.currentLevel = 0;

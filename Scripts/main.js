@@ -2,8 +2,8 @@ const gameEngine = new GameEngine();
 gameEngine.options.showBoundingBoxes = true;
 const ASSET_MANAGER = new AssetManager();
 
-// Change this number to spawn in a different level (1, 2, or 3)
-const STARTING_LEVEL = 5;
+// Change this number to spawn in a different level (1 through 6)
+const STARTING_LEVEL = 6;
 
 
 ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
@@ -31,6 +31,8 @@ ASSET_MANAGER.downloadAll(() => {
         sceneManager.loadLevel4();
     }else if (STARTING_LEVEL === 5) {
         sceneManager.loadLevel5();
+    }else if (STARTING_LEVEL === 6) {
+        sceneManager.loadLevel6();
     }
 
     gameEngine.init(ctx);
