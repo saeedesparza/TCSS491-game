@@ -205,8 +205,7 @@ class SceneManager {
 
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
-        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(1023, 0, 1, 768)); // Right border
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
@@ -226,13 +225,17 @@ class SceneManager {
         // TODO: build level 6 layout here
         this.game.addEntity(new Platform(0, 734, 1024, 32));
         this.game.addEntity(new Platform(0, 634, 800, 32));
+        this.game.addEntity(new Spikes(290, 621, 30, 15));
+        this.game.addEntity(new Spikes(420, 621, 30, 15));
+        this.game.addEntity(new Spikes(550, 621, 30, 15));
+
+        this.game.addEntity(new Platform(224, 510, 800, 32));
        
-        // Borders
-        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
-        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
-        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
-        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
+        // Borders (inside the canvas by 1px, fully enclosed)
+        this.game.addEntity(new Border(1, 1, 1, 766)); // Left border
+        this.game.addEntity(new Border(1022, 1, 1, 766)); // Right border
+        this.game.addEntity(new Border(1, 766, 1022, 1)); // Bottom border
+        this.game.addEntity(new Border(1, 1, 1022, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
         cav.x = 90;//90

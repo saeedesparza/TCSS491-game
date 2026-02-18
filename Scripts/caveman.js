@@ -5,8 +5,8 @@ class Caveman {
 
         this.x = 25;
         this.y = 25;
-        this.spawnX = this.x;
-        this.spawnY = this.y;
+        this.spawnX = null;
+        this.spawnY = null;
         this.spawnCaptured = false;
 
         this.spriteWidth = 16;
@@ -98,6 +98,18 @@ class Caveman {
         this.updateBoundingBox();
         this.handleVerticalCollisions();
 
+        const minX = 0;
+        const maxX = this.game.ctx.canvas.width - this.width;
+        if (this.x < minX) {
+            this.x = minX;
+            this.velocity.x = 0;
+            this.updateBoundingBox();
+        } else if (this.x > maxX) {
+            this.x = maxX;
+            this.velocity.x = 0;
+            this.updateBoundingBox();
+        }
+
         // Coyote time logic: if just left ground, start timer
         if (!this.onGround && wasOnGround && this.velocity.y >= 0) {
             this.coyoteTimer = this.coyoteTime;
@@ -108,8 +120,9 @@ class Caveman {
             if (this.coyoteTimer < 0) this.coyoteTimer = 0;
         }
 
-        // If the caveman touches the right edge of the canvas go to the next level
-        if (this.boundingBox.right >= this.game.ctx.canvas.width) {
+        // Advance level only after the caveman fully exits the right side.
+        // This avoids triggering while simply colliding with a 1px right border.
+        if (this.boundingBox.left > this.game.ctx.canvas.width) {
             if (this.sceneManager && typeof this.sceneManager.nextLevel === "function") {
                 this.sceneManager.nextLevel();
             }
@@ -125,6 +138,21 @@ class Caveman {
             if (!(entity instanceof Platform || entity instanceof Border)) continue;
 
             if (this.boundingBox.collide(entity.boundingBox)) {
+                const overlapX = Math.min(
+                    this.boundingBox.right - entity.boundingBox.left,
+                    entity.boundingBox.right - this.boundingBox.left
+                );
+                const overlapY = Math.min(
+                    this.boundingBox.bottom - entity.boundingBox.top,
+                    entity.boundingBox.bottom - this.boundingBox.top
+                );
+
+                if (overlapX <= 0 || overlapY <= 0) continue;
+
+                if (overlapX >= overlapY) {
+                    continue;
+                }
+
                 // Determine which side to push out from
                 const overlapLeft = this.boundingBox.right - entity.boundingBox.left;
                 const overlapRight = entity.boundingBox.right - this.boundingBox.left;
@@ -149,9 +177,15 @@ class Caveman {
         for (const entity of this.game.entities) {
             if (entity instanceof Spikes || entity instanceof SpikesUD || entity instanceof SpikesLeft || entity instanceof SpikesRight) {
                 if (this.boundingBox.collide(entity.boundingBox)) {
+                    if (!this.spawnCaptured) {
+                        this.spawnX = this.x;
+                        this.spawnY = this.y;
+                        this.spawnCaptured = true;
+                    }
+
                     this.life = false;
-                    this.x = this.spawnX;
-                    this.y = this.spawnY;
+                    this.x = this.spawnX ?? this.x;
+                    this.y = this.spawnY ?? this.y;
                     this.velocity = { x: 0, y: 0 };
                     this.updateBoundingBox();
                 }

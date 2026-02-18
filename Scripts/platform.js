@@ -1,5 +1,5 @@
 class Platform {
-    static COYOTE_PIXELS = 10; // 10px extension on each side
+    static COYOTE_PIXELS = 0;
 
     constructor(x, y, width, height, tileIndex = 0) {
         this.x = x;
