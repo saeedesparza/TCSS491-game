@@ -9,21 +9,15 @@ class Caveman {
         this.spawnY = this.y;
         this.spawnCaptured = false;
 
-        this.spriteWidth = 23;
-        this.spriteHeight = 30;
-        this.drawScale = 1.5;
+        this.spriteWidth = 16;
+        this.spriteHeight = 32;
+        this.drawScale = 1.55;
 
         // Drawn size
         this.width = this.spriteWidth * this.drawScale;
         this.height = this.spriteHeight * this.drawScale;
 
-        // Shrink the hitbox width by 40% and keep it centered on the sprite
-        this.bboxWidth = this.width * 0.6;
-        this.bboxHeight = this.height;
-        this.bboxOffsetX = (this.width - this.bboxWidth) / 2;
-        this.bboxOffsetY = 0;
-
-        this.facing = 1; // 1 = right, -1 = left
+        this.facing = -1; // -1 = right, 1 = left
         this.speed = 211;
         this.life = true;
 
@@ -31,13 +25,14 @@ class Caveman {
         this.gravity = 2000;
         this.jumpStrength = 700;
         this.onGround = false;
+        // Coyote time variables
+        this.coyoteTime = 0.1; // seconds
+        this.coyoteTimer = 0;
 
-        this.boundingBox = new BoundingBox(
-            this.x + this.bboxOffsetX,
-            this.y + this.bboxOffsetY,
-            this.bboxWidth,
-            this.bboxHeight
-        );
+        this.bboxOffsetX = -10;
+        this.bboxOffsetY = 0;
+
+        this.boundingBox = new BoundingBox(this.x + this.bboxOffsetX, this.y + this.bboxOffsetY, this.width, this.height);
 
         // WALK animation
         // WALK animation
@@ -52,7 +47,7 @@ class Caveman {
         // IDLE animation (single frame)
         this.idleAnimator = new Animator(
             ASSET_MANAGER.getAsset("./Assets/spritesheet_caveman_idle.png"),
-            0, 0, 15, 31, 1, 1, 0, false, true
+            0, 0, 32, 32, 1, 1, 0, false, true
         );
 
         this.currentAnimator = this.idleAnimator;
@@ -67,24 +62,30 @@ class Caveman {
 
         const TICK = this.game.clockTick;
         let moving = false;
+        // Track previous onGround state for coyote time
+        const wasOnGround = this.onGround;
 
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
             this.facing = 1;
+            this.bboxOffsetX = 10;
             moving = true;
         }
         else if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
             this.velocity.x = this.speed;
             this.facing = -1;
+            this.bboxOffsetX = -10;
             moving = true;
         }
         else {
             this.velocity.x = 0;
         }
 
-        if (this.game.isKeyPressed(" ") && this.onGround) {
+        // Coyote time: allow jump if onGround or within coyote window
+        if (this.game.isKeyPressed(" ") && (this.onGround || this.coyoteTimer > 0)) {
             this.velocity.y = -this.jumpStrength;
             this.onGround = false;
+            this.coyoteTimer = 0; // Reset after jump
         }
 
         this.velocity.y += this.gravity * TICK;
@@ -96,6 +97,16 @@ class Caveman {
         this.y += this.velocity.y * TICK;
         this.updateBoundingBox();
         this.handleVerticalCollisions();
+
+        // Coyote time logic: if just left ground, start timer
+        if (!this.onGround && wasOnGround && this.velocity.y >= 0) {
+            this.coyoteTimer = this.coyoteTime;
+        } else if (this.onGround) {
+            this.coyoteTimer = this.coyoteTime;
+        } else if (this.coyoteTimer > 0) {
+            this.coyoteTimer -= TICK;
+            if (this.coyoteTimer < 0) this.coyoteTimer = 0;
+        }
 
         // If the caveman touches the right edge of the canvas go to the next level
         if (this.boundingBox.right >= this.game.ctx.canvas.width) {
@@ -120,7 +131,7 @@ class Caveman {
 
                 if (overlapLeft < overlapRight) {
                     // Colliding from the left side
-                    this.x = entity.boundingBox.left - this.bboxOffsetX - this.bboxWidth;
+                    this.x = (entity.boundingBox.left - this.boundingBox.width) - this.bboxOffsetX;
                 } else {
                     // Colliding from the right side
                     this.x = entity.boundingBox.right - this.bboxOffsetX;
@@ -157,7 +168,7 @@ class Caveman {
                 if (overlapTop < overlapBottom) {
                     
                     
-                    this.y = entity.boundingBox.top - this.bboxOffsetY - this.bboxHeight;
+                    this.y = (entity.boundingBox.top - this.boundingBox.height) - this.bboxOffsetY;
                     this.velocity.y = 0;
                     this.onGround = true;
                 } else {

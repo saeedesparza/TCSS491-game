@@ -24,7 +24,7 @@ class MovingPlatform extends Platform {
                 if (distanceX <= 50 && !this.hasTriggered) {
                     // Player is nearby, move the platform
                     this.x += this.moveDistance;
-                    this.boundingBox.update(this.x, this.y);
+                    this.boundingBox.update(this.x - (this.bboxPad || 0), this.y);
                     this.hasTriggered = true;
                 }
             }
@@ -34,7 +34,7 @@ class MovingPlatform extends Platform {
     reset() {
         this.x = this.initialX;
         this.y = this.initialY;
-        this.boundingBox.update(this.x, this.y);
+        this.boundingBox.update(this.x - (this.bboxPad || 0), this.y);
         this.hasTriggered = false;
     }
 }

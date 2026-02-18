@@ -20,9 +20,52 @@
             background-position: top left;
             background-repeat: no-repeat;
         }
+        #mainMenuOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #mainMenuOverlay h1 {
+            color: #fff;
+            font-size: 3em;
+            margin-bottom: 2em;
+            font-family: 'Micro 5', sans-serif;
+            letter-spacing: 2px;
+        }
+        #mainMenuOverlay button {
+            font-size: 2em;
+            margin: 0.5em 0;
+            padding: 0.5em 2em;
+            border: none;
+            border-radius: 8px;
+            background: #222;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Micro 5', sans-serif;
+            transition: background 0.2s;
+        }
+        #mainMenuOverlay button:hover {
+            background: #444;
+        }
     </style>
 
-    <canvas id="gameWorld" width="1024" height="768" style="border: 1px solid black; display: block; margin: auto;" tabindex="0" autofocus></canvas>
+    <div style="position: relative; width: 1024px; height: 768px; margin: auto;">
+        <canvas id="gameWorld" width="1024" height="768" style="border: 1px solid black; display: block; position: absolute; left: 0; top: 0; z-index: 1;" tabindex="0" autofocus></canvas>
+        <img id="hintArrowImg" src="Assets/arrowright.png" alt="Hint Arrow" style="position: absolute; top: 8px; right: 8px; width: 56px; height: 56px; z-index: 2; background: rgba(30,30,30,0.92); border-radius: 12px; box-shadow: 0 2px 12px #0008;" />
+    </div>
+    <div id="mainMenuOverlay">
+        <h1>Failure Is Intended</h1>
+        <button id="startGameBtn">Start</button>
+        <button id="quitGameBtn">Quit</button>
+    </div>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">

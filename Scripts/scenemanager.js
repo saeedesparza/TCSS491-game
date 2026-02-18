@@ -15,12 +15,12 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 734, 1024, 32));
         this.game.addEntity(new Spikes(0, 723, 1024, 15));
 
-        this.game.addEntity(new Platform(0, 500, 200, 32));
+        this.game.addEntity(new Platform(0, 500, 220, 32));
         this.game.addEntity(new Platform(250, 400, 125, 32));
 
         this.game.addEntity(new FakePlatform(650, 650, 96, 32));
  
-        this.game.addEntity(new MovingPlatform(this.game, 400, 550, 96, 32, 0, 100));
+        this.game.addEntity(new MovingPlatform(this.game, 400, 550, 96, 32, 0, 100)); //REVISE THIS
 
         this.game.addEntity(new Platform(755, 550, 30, 32));
         this.game.addEntity(new Platform(874, 450, 150, 32));
@@ -32,12 +32,11 @@ class SceneManager {
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         // Right border split to create vertical gap between y=400 and y=450
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 0, 1, 0)); // Right border top
         this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
-        // Vaughn this is passing the code to the scene manager so keep an eye on this
         const cav = new Caveman(this.game, this);
         cav.x = 25;
         cav.y = 455;

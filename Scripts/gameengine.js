@@ -98,7 +98,7 @@ class GameEngine {
         // Debug: draw bounding boxes for entities that have them
         if (this.options.debugging || this.options.showBoundingBoxes) {
             this.ctx.save();
-            this.ctx.strokeStyle = "red";
+            this.ctx.strokeStyle = "white";
             this.ctx.lineWidth = 1;
             for (let i = 0; i < this.entities.length; i++) {
                 const e = this.entities[i];
