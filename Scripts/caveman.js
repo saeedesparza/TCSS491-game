@@ -226,7 +226,22 @@ class Caveman {
             0,
             this.drawScale
         );
+        ctx.restore();
 
+        this.drawCoordinates(ctx);
+    }
+
+        drawCoordinates(ctx) {
+        const x = Math.round(this.x);
+        const y = Math.round(this.y);
+
+        ctx.save();
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.strokeText(X: ${x}  Y: ${y}, 12, 24);
+        ctx.fillText(X: ${x}  Y: ${y}, 12, 24);
         ctx.restore();
     }
 }
