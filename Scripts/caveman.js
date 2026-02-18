@@ -231,7 +231,7 @@ class Caveman {
         this.drawCoordinates(ctx);
     }
 
-        drawCoordinates(ctx) {
+    drawCoordinates(ctx) {
         const x = Math.round(this.x);
         const y = Math.round(this.y);
 
@@ -240,8 +240,9 @@ class Caveman {
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
         ctx.lineWidth = 3;
-        ctx.strokeText(X: ${x}  Y: ${y}, 12, 24);
-        ctx.fillText(X: ${x}  Y: ${y}, 12, 24);
+        const coordText = `X: ${x}  Y: ${y}`;
+        ctx.strokeText(coordText, 12, 24);
+        ctx.fillText(coordText, 12, 24);
         ctx.restore();
     }
 }
