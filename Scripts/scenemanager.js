@@ -246,6 +246,13 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 470, 60));
         this.game.addEntity(new Torch(this.game, 870, 60));
     }
+
+    loadLevel7() {
+        this.clearEntities();
+
+        this.gane.addEntity(new Platform(0, 734, 1024, 32));
+        this.game.addEntity(new Spikes(0, 723, 1024, 15));
+    }
     
 
     nextLevel() {

@@ -29,10 +29,8 @@ class Caveman {
         this.coyoteTime = 0.1; // seconds
         this.coyoteTimer = 0;
 
-        this.bboxOffsetX = -10;
-        this.bboxOffsetY = 0;
 
-        this.boundingBox = new BoundingBox(this.x + this.bboxOffsetX, this.y + this.bboxOffsetY, this.width, this.height);
+        this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
 
         // WALK animation
         // WALK animation
@@ -68,13 +66,13 @@ class Caveman {
         if (this.game.isKeyPressed("a") || this.game.isKeyPressed("arrowleft")) {
             this.velocity.x = -this.speed;
             this.facing = 1;
-            this.bboxOffsetX = 10;
+            //this.bboxOffsetX = 10;
             moving = true;
         }
         else if (this.game.isKeyPressed("d") || this.game.isKeyPressed("arrowright")) {
             this.velocity.x = this.speed;
             this.facing = -1;
-            this.bboxOffsetX = -10;
+            //this.bboxOffsetX = -10;
             moving = true;
         }
         else {
@@ -159,10 +157,10 @@ class Caveman {
 
                 if (overlapLeft < overlapRight) {
                     // Colliding from the left side
-                    this.x = (entity.boundingBox.left - this.boundingBox.width) - this.bboxOffsetX;
+                    this.x = entity.boundingBox.left - this.boundingBox.width;
                 } else {
                     // Colliding from the right side
-                    this.x = entity.boundingBox.right - this.bboxOffsetX;
+                    this.x = entity.boundingBox.right;
                 }
 
                 this.velocity.x = 0;
@@ -202,13 +200,13 @@ class Caveman {
                 if (overlapTop < overlapBottom) {
                     
                     
-                    this.y = (entity.boundingBox.top - this.boundingBox.height) - this.bboxOffsetY;
+                    this.y = entity.boundingBox.top - this.boundingBox.height;
                     this.velocity.y = 0;
                     this.onGround = true;
                 } else {
                     
                     
-                    this.y = entity.boundingBox.bottom - this.bboxOffsetY;
+                    this.y = entity.boundingBox.bottom;
                     this.velocity.y = 0;
                 }
 
@@ -218,36 +216,51 @@ class Caveman {
     }
 
     updateBoundingBox() {
+        const frameW = 32;
+        const frameH = 32;
+
+        const drawW = frameW * this.drawScale;
+        const drawH = frameH * this.drawScale;
+
+        const originalHitW = this.width;
+        const originalHitH = this.height;
+
+        const hitW = originalHitW - 2;
+        const hitH = originalHitH;
+
+        const offsetX = (drawW - hitW) / 2;
+        const offsetY = (drawH - hitH) / 2;
+
         this.boundingBox.update(
-            this.x + this.bboxOffsetX,
-            this.y + this.bboxOffsetY
+            this.x + offsetX,
+            this.y + offsetY
         );
+
+        this.boundingBox.width = hitW;
+        this.boundingBox.height = hitH;
     }
 
     draw(ctx) {
         ctx.save();
 
+        const frameW = 32;
+        const drawW  = frameW * this.drawScale;
+
+        ctx.translate(this.x, this.y);
+
         if (this.facing === -1) {
+            ctx.translate(drawW, 0);
             ctx.scale(-1, 1);
         }
-
-        const drawX = this.facing === -1
-            ? -this.x - this.width
-            : this.x;
 
         this.currentAnimator.drawFrame(
             this.game.clockTick,
             ctx,
-            drawX,
-            this.y,
-            1.5
+            0,
+            0,
+            this.drawScale
         );
 
         ctx.restore();
-
-        // shows coordinates for debugging
-        ctx.fillStyle = "white";
-         ctx.font = "16px Arial";
-         ctx.fillText("X: " + Math.round(this.x) + " Y: " + Math.round(this.y), 10, 30);
     }
 }
