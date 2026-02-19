@@ -190,13 +190,13 @@ class SceneManager {
 
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
-        this.game.addEntity(new Border(1023, 0, 1, 768)); // Right border
+        this.game.addEntity(new Border(1023, 500, 1, 268)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
         cav.x = 25;//25
-        cav.y = 352;//355
+        cav.y = 355;//355
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -210,6 +210,7 @@ class SceneManager {
 
         // first run 
         this.game.addEntity(new Platform(0, 734, 1024, 32));
+
         this.game.addEntity(new Platform(0, 634, 800, 32));
         this.game.addEntity(new Spikes(200, 622, 8, 15));
         this.game.addEntity(new Spikes(270, 622, 8, 15));
@@ -278,13 +279,9 @@ class SceneManager {
         this.game.addEntity(new Platform(899, 180, 125, 32));
 
 
-        // Borders
-        // Left side has two gaps for level 6:
-        // - top gap: y = 0..100
-        // - bottom gap: y = 668..768
-        this.game.addEntity(new Border(0, 150, 1, 468)); // Left border middle segment
-        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
-        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        
+            this.game.addEntity(new Border(0, 150, 1, 468)); // Left border middle segment
+            this.game.addEntity(new Border(1023, 0, 1, 768)); // Right border
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
