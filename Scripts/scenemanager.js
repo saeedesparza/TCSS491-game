@@ -29,7 +29,7 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 736, 1024, 32));
 
         this.game.addEntity(new Platform(250, 300, 125, 32));
-        this.game.addEntity(new SpikesUD(254, 20, 120, 11));//330
+        this.game.addEntity(new SpikesUD(254, 330, 120, 11));//330
 
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
@@ -104,7 +104,7 @@ class SceneManager {
         this.game.addEntity(new Platform(175, 650, 115, 32));
 
         this.game.addEntity(new VerticalPlatform(165, 0, 32, 425, 0, 1));
-        this.game.addEntity(new SpikesRight(150, 0, 15, 425));
+        this.game.addEntity(new SpikesRight(154, 0, 15, 425));
         this.game.addEntity(new Platform(0, 450, 115, 32));
 
         this.game.addEntity(new Platform(400, 600, 115, 32));
@@ -175,10 +175,10 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 400, 125, 32));
         this.game.addEntity(new FakePlatform(200, 400, 100, 32));
 
-        this.game.addEntity(new Spikes(200, 488, 80, 15));
+        this.game.addEntity(new Spikes(200, 488, 90, 15));
         this.game.addEntity(new Platform(200, 500, 100, 32));
         
-        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 50));
+        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 62));
 
         this.game.addEntity(new MovingPlatform(this.game, 585, 450, 100, 32, 0, 45));
 

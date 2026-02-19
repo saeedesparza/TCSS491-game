@@ -96,23 +96,23 @@ class GameEngine {
         }
 
         // Debug: draw bounding boxes for entities that have them
-        if (this.options.debugging || this.options.showBoundingBoxes) {
-            this.ctx.save();
-            this.ctx.strokeStyle = "white";
-            this.ctx.lineWidth = 1;
-            for (let i = 0; i < this.entities.length; i++) {
-                const e = this.entities[i];
-                if (e && e.boundingBox) {
-                    this.ctx.strokeRect(
-                        e.boundingBox.left,
-                        e.boundingBox.top,
-                        e.boundingBox.width,
-                        e.boundingBox.height
-                    );
-                }
-            }
-            this.ctx.restore();
-        }
+        // if (this.options.debugging || this.options.showBoundingBoxes) {
+        //     this.ctx.save();
+        //     this.ctx.strokeStyle = "white";
+        //     this.ctx.lineWidth = 1;
+        //     for (let i = 0; i < this.entities.length; i++) {
+        //         const e = this.entities[i];
+        //         if (e && e.boundingBox) {
+        //             this.ctx.strokeRect(
+        //                 e.boundingBox.left,
+        //                 e.boundingBox.top,
+        //                 e.boundingBox.width,
+        //                 e.boundingBox.height
+        //             );
+        //         }
+        //     }
+        //     this.ctx.restore();
+        // }
     };
 
     update() {

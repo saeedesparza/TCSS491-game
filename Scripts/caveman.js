@@ -327,7 +327,7 @@ class Caveman {
         );
         ctx.restore();
 
-        this.drawCoordinates(ctx);
+       //this.drawCoordinates(ctx);
     }
 
     drawCoordinates(ctx) {

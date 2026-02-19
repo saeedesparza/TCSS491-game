@@ -2,7 +2,7 @@ const gameEngine = new GameEngine();
 gameEngine.options.showBoundingBoxes = true;
 const ASSET_MANAGER = new AssetManager();
 
-const STARTING_LEVEL = 9;
+const STARTING_LEVEL = 1;
 
 
 ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
