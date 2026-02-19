@@ -87,14 +87,18 @@ class Caveman {
         // Apply gravity
         this.velocity.y += this.gravity * TICK;
 
+        const canCollideWith = (entity) => {
+            if (entity instanceof FakePlatform && !entity.isMovingPlatform) return false;
+            return entity instanceof Platform || entity instanceof Border || entity instanceof VerticalPlatform;
+        };
+
         // --- Horizontal movement and collision ---
         const prevX = this.x;
         this.x += this.velocity.x * TICK;
         this.updateBoundingBox();
         let horizontalBlocked = false;
         for (const entity of this.game.entities) {
-            if (!(entity instanceof Platform || entity instanceof Border)) continue;
-            if (entity instanceof FakePlatform) continue;
+            if (!canCollideWith(entity)) continue;
             if (this.boundingBox.collide(entity.boundingBox)) {
                 // Block horizontal movement, revert x
                 this.x = prevX;
@@ -127,8 +131,7 @@ class Caveman {
                 }
             }
             // Handle platforms and borders
-            if (!(entity instanceof Platform || entity instanceof Border)) continue;
-            if (entity instanceof FakePlatform && !entity.isMovingPlatform) continue;
+            if (!canCollideWith(entity)) continue;
             if (this.boundingBox.collide(entity.boundingBox)) {
                 const overlapTop = this.boundingBox.bottom - entity.boundingBox.top;
                 const overlapBottom = entity.boundingBox.bottom - this.boundingBox.top;
@@ -148,14 +151,91 @@ class Caveman {
             }
         }
 
+        const canExitRightThroughGap = () => {
+            const canvasWidth = this.game.ctx.canvas.width;
+            const playerTop = this.boundingBox.top;
+            const playerBottom = this.boundingBox.bottom;
+
+            for (const entity of this.game.entities) {
+                if (!(entity instanceof Border)) continue;
+
+                const touchesRightBoundary = entity.boundingBox.left >= canvasWidth - 1;
+                if (!touchesRightBoundary) continue;
+
+                const overlapsVertically =
+                    entity.boundingBox.bottom > playerTop &&
+                    entity.boundingBox.top < playerBottom;
+
+                if (overlapsVertically) return false;
+            }
+
+            return true;
+        };
+
+        const canExitLeftThroughGap = () => {
+            const playerTop = this.boundingBox.top;
+            const playerBottom = this.boundingBox.bottom;
+
+            for (const entity of this.game.entities) {
+                if (!(entity instanceof Border)) continue;
+
+                const touchesLeftBoundary = entity.boundingBox.left <= 1;
+                if (!touchesLeftBoundary) continue;
+
+                const overlapsVertically =
+                    entity.boundingBox.bottom > playerTop &&
+                    entity.boundingBox.top < playerBottom;
+
+                if (overlapsVertically) return false;
+            }
+
+            return true;
+        };
+
+        const tryTriggerRightGapTransition = () => {
+            if (this.velocity.x <= 0) return;
+            if (!this.sceneManager || typeof this.sceneManager.nextLevel !== "function") return;
+
+            const canvasWidth = this.game.ctx.canvas.width;
+            const atRightEdge = this.boundingBox.right >= canvasWidth - 1;
+            if (atRightEdge && canExitRightThroughGap()) {
+                this.sceneManager.nextLevel();
+            }
+        };
+
+        const tryTriggerLevel6LeftGapAction = () => {
+            if (!this.sceneManager || this.sceneManager.currentLevel !== 5) return;
+            if (this.velocity.x >= 0) return;
+
+            const atLeftEdge = this.boundingBox.left <= 1;
+            if (!atLeftEdge || !canExitLeftThroughGap()) return;
+
+            const playerCenterY = (this.boundingBox.top + this.boundingBox.bottom) / 2;
+
+            if (playerCenterY <= 100) {
+                if (typeof this.sceneManager.reloadLevel === "function") {
+                    this.sceneManager.reloadLevel();
+                }
+            } else if (playerCenterY >= 668) {
+                if (typeof this.sceneManager.nextLevel === "function") {
+                    this.sceneManager.nextLevel();
+                }
+            }
+        };
+
+        tryTriggerRightGapTransition();
+        tryTriggerLevel6LeftGapAction();
+
         // --- World bounds ---
         const minX = 0;
         const maxX = this.game.ctx.canvas.width - this.width;
         if (this.x < minX) {
+            tryTriggerLevel6LeftGapAction();
             this.x = minX;
             this.velocity.x = 0;
             this.updateBoundingBox();
         } else if (this.x > maxX) {
+            tryTriggerRightGapTransition();
             this.x = maxX;
             this.velocity.x = 0;
             this.updateBoundingBox();

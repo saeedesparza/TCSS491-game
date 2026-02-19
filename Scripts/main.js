@@ -3,7 +3,7 @@ gameEngine.options.showBoundingBoxes = true;
 const ASSET_MANAGER = new AssetManager();
 
 // Change this number to spawn in a different level (1 through 6)
-const STARTING_LEVEL = 4;
+const STARTING_LEVEL =4;
 
 
 ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
