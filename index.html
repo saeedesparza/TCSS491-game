@@ -63,13 +63,26 @@
         <canvas id="gameWorld" width="1024" height="768" style="border: 1px solid black; display: block; position: absolute; left: 0; top: 0; z-index: 1;" tabindex="0" autofocus></canvas>
         <img id="hintArrowImg" src="Assets/arrowright.png" alt="Hint Arrow" style="position: absolute; top: 8px; right: 8px; width: 56px; height: 56px; z-index: 2; background: rgba(30,30,30,0.92); border-radius: 12px; box-shadow: 0 2px 12px #0008;" />
     </div>
-    <!--
     <div id="mainMenuOverlay">
         <h1>Failure Is Intended</h1>
         <button id="startGameBtn">Start</button>
         <button id="quitGameBtn">Quit</button>
     </div>
-    -->
+
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const menu = document.getElementById('mainMenuOverlay');
+        const startBtn = document.getElementById('startGameBtn');
+        if (menu && startBtn) {
+            startBtn.addEventListener('click', function() {
+                menu.style.display = 'none';
+                // Optionally focus the canvas
+                const canvas = document.getElementById('gameWorld');
+                if (canvas) canvas.focus();
+            });
+        }
+    });
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
