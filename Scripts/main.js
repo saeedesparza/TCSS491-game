@@ -2,7 +2,7 @@ const gameEngine = new GameEngine();
 gameEngine.options.showBoundingBoxes = true;
 const ASSET_MANAGER = new AssetManager();
 
-const STARTING_LEVEL = 8;
+const STARTING_LEVEL = 9;
 
 
 ASSET_MANAGER.queueDownload("./Assets/blocks_prev.png");
@@ -50,6 +50,15 @@ ASSET_MANAGER.downloadAll(() => {
             break;
         case 7:
             sceneManager.loadLevel7();
+            break;
+        case 8:
+            sceneManager.loadLevel8();
+            break;
+        case 9:
+            sceneManager.loadLevel9();
+            break;
+        case 10:
+            sceneManager.loadLevel10();
             break;
         default:
             console.warn(`Invalid STARTING_LEVEL (${STARTING_LEVEL}); defaulting to level 1.`);

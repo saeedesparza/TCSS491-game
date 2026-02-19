@@ -275,13 +275,13 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 550, 150, 32));
         this.game.addEntity(new Platform(0, 310, 150, 32));
 
-         this.game.addEntity(new Platform(899, 440, 125, 32));
+        this.game.addEntity(new Platform(899, 440, 125, 32));
         this.game.addEntity(new Platform(899, 180, 125, 32));
 
 
         
-            this.game.addEntity(new Border(0, 150, 1, 468)); // Left border middle segment
-            this.game.addEntity(new Border(1023, 0, 1, 768)); // Right border
+        this.game.addEntity(new Border(0, 150, 1, 468)); // Left border middle segment
+        this.game.addEntity(new Border(1023, 0, 1, 768)); // Right border
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
@@ -320,7 +320,6 @@ class SceneManager {
         this.game.addEntity(new SpikesLeft(30, 0, 15, 680));
 
         // right wall with spikes
-        this.game.addEntity(new Platform(153, 150, 25, 32));
         this.game.addEntity(new VerticalPlatform(153, 150, 32, 740, 0, 1));
         this.game.addEntity(new SpikesRight(142, 150, 15, 740));
 
@@ -342,7 +341,7 @@ class SceneManager {
 
         // borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
-        this.game.addEntity(new Border(1023, 435, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(1023, 255, 1, 900)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
@@ -360,41 +359,136 @@ class SceneManager {
         this.currentLevel = 7;
         this.clearEntities();
 
-        this.game.addEntity(new Platform(0, 734, 1024, 32));
-        this.game.addEntity(new Spikes(0, 723, 1024, 15));
+        // bottom platforms
+        this.game.addEntity(new Platform(0, 734, 50, 32));
+        this.game.addEntity(new Spikes(50, 755, 650, 15));
+        this.game.addEntity(new Platform(700, 734, 350, 32));
 
-        this.game.addEntity(new Platform(0, 400, 125, 32));
-        this.game.addEntity(new FakePlatform(200, 400, 100, 32));
+        // upward stairs
+        this.game.addEntity(new Platform(146, 650, 12, 12));
+        this.game.addEntity(new Platform(276, 550, 12, 12));
+        this.game.addEntity(new Platform(406, 450, 12, 12));
+        this.game.addEntity(new Platform(536, 350, 12, 12));
+        this.game.addEntity(new Platform(666, 250, 12, 12));
 
-        this.game.addEntity(new Spikes(200, 488, 80, 15));
-        this.game.addEntity(new Platform(200, 500, 100, 32));
-        
-        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 50));
+        // platform with spikes to force player down spike drop
+        this.game.addEntity(new Platform(764, 247, 300, 32));
+        this.game.addEntity(new Spikes(764, 235, 300, 15));
 
-        this.game.addEntity(new MovingPlatform(this.game, 585, 450, 100, 32, 0, 45));
+        // spike drop left
+        this.game.addEntity(new SpikesLeft(676, 280, 15, 30));
+        this.game.addEntity(new SpikesLeft(687, 310, 15, 30));
+        this.game.addEntity(new SpikesLeft(698, 340, 15, 30));
+        this.game.addEntity(new SpikesLeft(709, 370, 15, 30));
+        this.game.addEntity(new SpikesLeft(720, 400, 15, 30));
+        this.game.addEntity(new SpikesLeft(731, 430, 15, 30));
+        this.game.addEntity(new SpikesLeft(742, 460, 15, 30));
+        this.game.addEntity(new SpikesLeft(753, 490, 15, 30));
+        this.game.addEntity(new SpikesLeft(764, 520, 15, 30));
 
-        this.game.addEntity(new Spikes(665, 436, 20, 15));
-        this.game.addEntity(new Platform(200, 500, 100, 32))
+        // spike drop right
+        this.game.addEntity(new SpikesRight(764, 280, 15, 30));
+        this.game.addEntity(new SpikesRight(775, 310, 15, 30));
+        this.game.addEntity(new SpikesRight(786, 340, 15, 30));
+        this.game.addEntity(new SpikesRight(797, 370, 15, 30));
+        this.game.addEntity(new SpikesRight(808, 400, 15, 30));
+        this.game.addEntity(new SpikesRight(819, 430, 15, 30));
+        this.game.addEntity(new SpikesRight(830, 460, 15, 30));
+        this.game.addEntity(new SpikesRight(841, 490, 15, 30));
+        this.game.addEntity(new SpikesRight(852, 520, 15, 30));
 
-       // this.game.addEntity(new FakePlatform(800, 450, 30, 32));
-        this.game.addEntity(new Platform(869, 400, 155, 32));
+        // spike drop left mirrored
+        this.game.addEntity(new SpikesLeft(753, 550, 15, 30));
+        this.game.addEntity(new SpikesLeft(742, 580, 15, 30));
+        this.game.addEntity(new SpikesLeft(731, 610, 15, 30));
+        this.game.addEntity(new SpikesLeft(720, 640, 15, 30));
+        this.game.addEntity(new SpikesLeft(709, 670, 15, 30));
+        this.game.addEntity(new SpikesLeft(698, 700, 15, 30));
 
-        // Borders
+        // spike drop right mirrored
+        this.game.addEntity(new SpikesRight(841, 550, 15, 30));
+        this.game.addEntity(new SpikesRight(830, 580, 15, 30));
+        this.game.addEntity(new SpikesRight(819, 610, 15, 30));
+        this.game.addEntity(new SpikesRight(808, 640, 15, 30));
+        this.game.addEntity(new SpikesRight(797, 670, 15, 10));
+
+        // borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
-        this.game.addEntity(new Border(1023, 500, 1, 268)); // Right border bottom
+        this.game.addEntity(new Border(1023, 0, 1, 600)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
-        cav.x = 25;
-        cav.y = 350;
+        cav.x = 652;
+        cav.y = 202;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
         this.game.addEntity(new Torch(this.game, 470, 60));
         this.game.addEntity(new Torch(this.game, 870, 60));
     }
-    
+
+    loadLevel9() {
+        this.currentLevel = 8;
+        this.clearEntities();
+
+        // bottom floor and first platform
+        this.game.addEntity(new Platform(0, 90, 100, 32));
+        this.game.addEntity(new Spikes(0, 755, 900, 15));
+
+        // upward stairs
+        this.game.addEntity(new Platform(256, 550, 3, 12));
+        this.game.addEntity(new Platform(416, 550, 3, 12));
+        this.game.addEntity(new Platform(576, 550, 3, 12));
+        this.game.addEntity(new Platform(736, 550, 3, 12));
+
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768));
+        this.game.addEntity(new Border(1023, 0, 1, 668));
+        this.game.addEntity(new Border(0, 767, 1024, 1));
+        this.game.addEntity(new Border(0, 0, 1024, 1));
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 50;
+        cav.y = 0;
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
+        this.game.addEntity(new Torch(this.game, 58, 60));
+        this.game.addEntity(new Torch(this.game, 470, 60));
+        this.game.addEntity(new Torch(this.game, 870, 60));
+    }
+
+    loadLevel10() {
+        this.currentLevel = 9;
+        this.clearEntities();
+
+        // Maze-like level with platforms and spikes
+        this.game.addEntity(new Platform(0, 734, 1024, 32));
+        this.game.addEntity(new Platform(0, 600, 300, 32));
+        this.game.addEntity(new Platform(724, 600, 300, 32));
+        this.game.addEntity(new Platform(350, 500, 324, 32));
+        this.game.addEntity(new Platform(0, 400, 200, 32));
+        this.game.addEntity(new Platform(824, 400, 200, 32));
+        this.game.addEntity(new Platform(350, 300, 324, 32));
+        this.game.addEntity(new Spikes(200, 389, 624, 11));
+        this.game.addEntity(new SpikesUD(500, 232, 100, 8));
+        this.game.addEntity(new MovingPlatform(this.game, 512, 200, 100, 32, 0, 80));
+
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768));
+        this.game.addEntity(new Border(1023, 0, 1, 768));
+        this.game.addEntity(new Border(0, 767, 1024, 1));
+        this.game.addEntity(new Border(0, 0, 1024, 1));
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 50;
+        cav.y = 650;
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
+        this.game.addEntity(new Torch(this.game, 58, 60));
+        this.game.addEntity(new Torch(this.game, 470, 60));
+        this.game.addEntity(new Torch(this.game, 870, 60));
+    }
 
     nextLevel() {
         if (!this._queued) {
