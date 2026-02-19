@@ -28,6 +28,7 @@ ASSET_MANAGER.downloadAll(() => {
     const sceneManager = new SceneManager(gameEngine);
 
     gameEngine.sceneManager = sceneManager;
+    window.sceneManager = sceneManager;
 
     switch (STARTING_LEVEL) {
         case 1:

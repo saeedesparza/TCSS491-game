@@ -65,6 +65,19 @@
     </div>
     <div id="mainMenuOverlay">
         <h1>Failure Is Intended</h1>
+        <label for="levelSelect" style="color:#fff;font-size:1.5em;margin-bottom:1em;">Select Level:</label>
+        <select id="levelSelect" style="font-size:1.2em;margin-bottom:1em;">
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+            <option value="6">Level 6</option>
+            <option value="7">Level 7</option>
+            <option value="8">Level 8</option>
+            <option value="9">Level 9</option>
+            <option value="10">Level 10</option>
+        </select>
         <button id="startGameBtn">Start</button>
         <button id="quitGameBtn">Quit</button>
     </div>
@@ -74,11 +87,29 @@
         const menu = document.getElementById('mainMenuOverlay');
         const startBtn = document.getElementById('startGameBtn');
         const quitBtn = document.getElementById('quitGameBtn');
-        if (menu && startBtn) {
+        const levelSelect = document.getElementById('levelSelect');
+        if (menu && startBtn && levelSelect) {
             startBtn.addEventListener('click', function() {
                 menu.style.display = 'none';
                 const canvas = document.getElementById('gameWorld');
                 if (canvas) canvas.focus();
+                // Set selected level and reload game
+                window.selectedLevel = parseInt(levelSelect.value);
+                if (window.sceneManager && window.selectedLevel) {
+                    switch(window.selectedLevel) {
+                        case 1: window.sceneManager.loadLevel1(); break;
+                        case 2: window.sceneManager.loadLevel2(); break;
+                        case 3: window.sceneManager.loadLevel3(); break;
+                        case 4: window.sceneManager.loadLevel4(); break;
+                        case 5: window.sceneManager.loadLevel5(); break;
+                        case 6: window.sceneManager.loadLevel6(); break;
+                        case 7: window.sceneManager.loadLevel7(); break;
+                        case 8: window.sceneManager.loadLevel8(); break;
+                        case 9: window.sceneManager.loadLevel9(); break;
+                        case 10: window.sceneManager.loadLevel10(); break;
+                        default: window.sceneManager.loadLevel1(); break;
+                    }
+                }
             });
         }
         if (quitBtn) {
