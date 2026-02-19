@@ -195,8 +195,8 @@ class SceneManager {
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
-        cav.x = 25;//25
-        cav.y = 355;//355
+        cav.x = 25;
+        cav.y = 350;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
         this.game.addEntity(new Torch(this.game, 58, 60));
@@ -355,6 +355,45 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 470, 60));
         this.game.addEntity(new Torch(this.game, 870, 60));
     }
+
+    loadLevel8() {
+        this.currentLevel = 7;
+        this.clearEntities();
+
+        this.game.addEntity(new Platform(0, 734, 1024, 32));
+        this.game.addEntity(new Spikes(0, 723, 1024, 15));
+
+        this.game.addEntity(new Platform(0, 400, 125, 32));
+        this.game.addEntity(new FakePlatform(200, 400, 100, 32));
+
+        this.game.addEntity(new Spikes(200, 488, 80, 15));
+        this.game.addEntity(new Platform(200, 500, 100, 32));
+        
+        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 50));
+
+        this.game.addEntity(new MovingPlatform(this.game, 585, 450, 100, 32, 0, 45));
+
+        this.game.addEntity(new Spikes(665, 436, 20, 15));
+        this.game.addEntity(new Platform(200, 500, 100, 32))
+
+       // this.game.addEntity(new FakePlatform(800, 450, 30, 32));
+        this.game.addEntity(new Platform(869, 400, 155, 32));
+
+        // Borders
+        this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
+        this.game.addEntity(new Border(1023, 500, 1, 268)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
+
+        const cav = new Caveman(this.game, this);
+        cav.x = 25;
+        cav.y = 350;
+        cav.boundingBox.update(cav.x, cav.y);
+        this.game.addEntity(cav);
+        this.game.addEntity(new Torch(this.game, 58, 60));
+        this.game.addEntity(new Torch(this.game, 470, 60));
+        this.game.addEntity(new Torch(this.game, 870, 60));
+    }
     
 
     nextLevel() {
@@ -394,6 +433,10 @@ class SceneManager {
             this.loadLevel6();
         } else if (this.currentLevel === 6) {
             this.loadLevel7();
+        } else if (this.currentLevel === 7) {
+            this.loadLevel8();
+        } else if (this.currentLevel === 8) {
+            this.loadLevel9();
         } else {
             // loops back to level 1
             this.currentLevel = 0;
@@ -418,6 +461,8 @@ class SceneManager {
             this.loadLevel6();
         } else if (this.currentLevel === 6) {
             this.loadLevel7();
+        } else if (this.currentLevel === 7) {
+            this.loadLevel8();
         } else {
             this.currentLevel = 0;
             this.loadLevel1();
