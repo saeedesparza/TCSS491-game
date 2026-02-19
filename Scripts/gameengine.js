@@ -146,6 +146,10 @@ class GameEngine {
 
         // Process any queued scene transitions (do this here to avoid mutating
         // the entities list while it's being iterated above)
+        if (this.sceneManager && this.sceneManager._reloadQueued) {
+            this.sceneManager.reloadLevelImmediate();
+        }
+
         if (this.sceneManager && this.sceneManager._queued) {
             this.sceneManager.nextLevelImmediate();
         }

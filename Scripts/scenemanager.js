@@ -3,6 +3,7 @@ class SceneManager {
         this.game = game;
         this.currentLevel = 0;
         this._queued = false;
+        this._reloadQueued = false;
     }
 
     clearEntities() {
@@ -10,6 +11,7 @@ class SceneManager {
     }
 
     loadLevel1() {
+        this.currentLevel = 0;
         this.clearEntities();
 
         this.game.addEntity(new Platform(0, 734, 1024, 32));
@@ -27,7 +29,7 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 736, 1024, 32));
 
         this.game.addEntity(new Platform(250, 300, 125, 32));
-        this.game.addEntity(new SpikesUD(254, 330, 120, 11));//330
+        this.game.addEntity(new SpikesUD(254, 20, 120, 11));//330
 
         // Borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
@@ -48,6 +50,7 @@ class SceneManager {
     }
 
     loadLevel2() {
+        this.currentLevel = 1;
         this.clearEntities();
         this.game.addEntity(new Spikes(169, 723, 855, 15));
         this.game.addEntity(new Platform(0, 734, 1024, 32));
@@ -88,6 +91,7 @@ class SceneManager {
         this.game.addEntity(new Torch(this.game, 870, 60));
     }
     loadLevel3() {
+        this.currentLevel = 2;
         this.clearEntities();
         this.game.addEntity(new Spikes(0, 723, 1024, 15));
         this.game.addEntity(new Platform(0, 734, 1024, 32));
@@ -127,6 +131,7 @@ class SceneManager {
     }
 
     loadLevel4() {
+        this.currentLevel = 3;
         this.clearEntities();
 
         // TODO: build level 4 layout here
@@ -161,6 +166,7 @@ class SceneManager {
     }
 
     loadLevel5() {
+        this.currentLevel = 4;
         this.clearEntities();
 
         this.game.addEntity(new Platform(0, 734, 1024, 32));
@@ -169,10 +175,10 @@ class SceneManager {
         this.game.addEntity(new Platform(0, 400, 125, 32));
         this.game.addEntity(new FakePlatform(200, 400, 100, 32));
 
-        this.game.addEntity(new Spikes(200, 488, 75, 15));
+        this.game.addEntity(new Spikes(200, 488, 80, 15));
         this.game.addEntity(new Platform(200, 500, 100, 32));
         
-        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 45));
+        this.game.addEntity(new MovingPlatform(this.game, 400, 450, 30, 32, 0, 50));
 
         this.game.addEntity(new MovingPlatform(this.game, 585, 450, 100, 32, 0, 45));
 
@@ -199,34 +205,101 @@ class SceneManager {
     }
 
     loadLevel6() {
+        this.currentLevel = 5;
         this.clearEntities();
 
-        // TODO: build level 6 layout here
+        // first run 
         this.game.addEntity(new Platform(0, 734, 1024, 32));
         this.game.addEntity(new Platform(0, 634, 800, 32));
-        this.game.addEntity(new Spikes(290, 621, 30, 15));
-        this.game.addEntity(new Spikes(420, 621, 30, 15));
-        this.game.addEntity(new Spikes(550, 621, 30, 15));
+        this.game.addEntity(new Spikes(200, 622, 8, 15));
+        this.game.addEntity(new Spikes(270, 622, 8, 15));
+        this.game.addEntity(new Spikes(340, 622, 8, 15));
+        this.game.addEntity(new Spikes(410, 622, 8, 15));
+        this.game.addEntity(new Spikes(480, 622, 8, 15));
+        this.game.addEntity(new Spikes(550, 622, 8, 15));
+        this.game.addEntity(new Spikes(620, 622, 8, 15));
+        this.game.addEntity(new Spikes(690, 622, 8, 15));
+        this.game.addEntity(new Spikes(760, 622, 8, 15));
+        // second run 
+        this.game.addEntity(new Platform(224, 520, 800, 32));
+        this.game.addEntity(new Spikes(824, 508, 8, 15));
+        this.game.addEntity(new Spikes(754, 508, 8, 15));
+        this.game.addEntity(new Spikes(684, 508, 8, 15));
+        this.game.addEntity(new Spikes(614, 508, 8, 15));
+        this.game.addEntity(new Spikes(544, 508, 8, 15));
+        this.game.addEntity(new Spikes(474, 508, 8, 15));   
+        this.game.addEntity(new Spikes(404, 508, 8, 15));
+        this.game.addEntity(new Spikes(334, 508, 8, 15));
+        this.game.addEntity(new Spikes(294, 508, 8, 15));
+        this.game.addEntity(new Spikes(250, 508, 8, 15));
+        // third run 
+        this.game.addEntity(new Platform(0, 396, 800, 32));
+        this.game.addEntity(new Spikes(200, 384, 8, 15));
+        this.game.addEntity(new Spikes(270, 384, 8, 15));
+        this.game.addEntity(new Spikes(340, 384, 8, 15));
+        this.game.addEntity(new Spikes(410, 384, 8, 15));
+        this.game.addEntity(new Spikes(480, 384, 8, 15));
+        this.game.addEntity(new Spikes(550, 384, 8, 15));
+        this.game.addEntity(new Spikes(620, 384, 8, 15));
+        this.game.addEntity(new Spikes(690, 384, 8, 15));
+        this.game.addEntity(new Spikes(760, 384, 8, 15));
+         // fourth run 
+        this.game.addEntity(new Platform(224, 272, 800, 32));
+        this.game.addEntity(new Spikes(824, 260, 8, 15));
+        this.game.addEntity(new Spikes(754, 260, 8, 15));
+        this.game.addEntity(new Spikes(684, 260, 8, 15));
+        this.game.addEntity(new Spikes(614, 260, 8, 15));
+        this.game.addEntity(new Spikes(544, 260, 8, 15));
+        this.game.addEntity(new Spikes(474, 260, 8, 15));   
+        this.game.addEntity(new Spikes(404, 260, 8, 15));
+        this.game.addEntity(new Spikes(334, 260, 8, 15));
+        this.game.addEntity(new Spikes(294, 260, 8, 15));
+        this.game.addEntity(new Spikes(250, 260, 8, 15));
 
-        this.game.addEntity(new Platform(224, 510, 800, 32));
-       
-        // Borders (inside the canvas by 1px, fully enclosed)
-        this.game.addEntity(new Border(1, 1, 1, 766)); // Left border
-        this.game.addEntity(new Border(1022, 1, 1, 766)); // Right border
-        this.game.addEntity(new Border(1, 766, 1022, 1)); // Bottom border
-        this.game.addEntity(new Border(1, 1, 1022, 1)); // Top border
+         // final run 
+        this.game.addEntity(new Platform(0, 148, 800, 32));
+        this.game.addEntity(new Spikes(200, 136, 8, 15));
+        this.game.addEntity(new Spikes(270, 136, 8, 15));
+        this.game.addEntity(new Spikes(340, 136, 8, 15));
+        this.game.addEntity(new Spikes(410, 136, 8, 15));
+        this.game.addEntity(new Spikes(480, 136, 8, 15));
+        this.game.addEntity(new Spikes(550, 136, 8, 15));
+        this.game.addEntity(new Spikes(620, 136, 8, 15));
+        this.game.addEntity(new Spikes(690, 136, 8, 15));
+        this.game.addEntity(new Spikes(760, 136, 8, 15));
+
+        this.game.addEntity(new Spikes(874, 720, 150, 15));
+
+
+        this.game.addEntity(new Platform(0, 550, 150, 32));
+        this.game.addEntity(new Platform(0, 310, 150, 32));
+
+         this.game.addEntity(new Platform(899, 440, 125, 32));
+        this.game.addEntity(new Platform(899, 180, 125, 32));
+
+
+        // Borders
+        // Left side has two gaps for level 6:
+        // - top gap: y = 0..100
+        // - bottom gap: y = 668..768
+        this.game.addEntity(new Border(0, 150, 1, 468)); // Left border middle segment
+        this.game.addEntity(new Border(1023, 0, 1, 400)); // Right border top
+        this.game.addEntity(new Border(1023, 450, 1, 318)); // Right border bottom
+        this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
+        this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
         cav.x = 90;//90
-        cav.y = 686;//689
+        cav.y = 685;//685
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);
-        this.game.addEntity(new Torch(this.game, 58, 60));
-        this.game.addEntity(new Torch(this.game, 470, 60));
-        this.game.addEntity(new Torch(this.game, 870, 60));
+        this.game.addEntity(new Torch(this.game, 58, 30));
+        this.game.addEntity(new Torch(this.game, 470, 30));
+        this.game.addEntity(new Torch(this.game, 870, 30));
     }
 
     loadLevel7() {
+        this.currentLevel = 6;
         this.clearEntities();
 
         // bottom platforms
@@ -294,6 +367,13 @@ class SceneManager {
         }
     }
 
+    reloadLevel() {
+        if (!this._reloadQueued) {
+            this._reloadQueued = true;
+            console.log("Level reload queued");
+        }
+    }
+
     resetMovingPlatforms() {
         for (const entity of this.game.entities) {
             if (entity instanceof MovingPlatform) {
@@ -315,11 +395,36 @@ class SceneManager {
             this.loadLevel5();
         } else if (this.currentLevel === 5) {
             this.loadLevel6();
+        } else if (this.currentLevel === 6) {
+            this.loadLevel7();
         } else {
             // loops back to level 1
             this.currentLevel = 0;
             this.loadLevel1();
         }
         this._queued = false;
+    }
+
+    reloadLevelImmediate() {
+        console.log("Reloading level", this.currentLevel);
+        if (this.currentLevel === 0) {
+            this.loadLevel1();
+        } else if (this.currentLevel === 1) {
+            this.loadLevel2();
+        } else if (this.currentLevel === 2) {
+            this.loadLevel3();
+        } else if (this.currentLevel === 3) {
+            this.loadLevel4();
+        } else if (this.currentLevel === 4) {
+            this.loadLevel5();
+        } else if (this.currentLevel === 5) {
+            this.loadLevel6();
+        } else if (this.currentLevel === 6) {
+            this.loadLevel7();
+        } else {
+            this.currentLevel = 0;
+            this.loadLevel1();
+        }
+        this._reloadQueued = false;
     }
 }
