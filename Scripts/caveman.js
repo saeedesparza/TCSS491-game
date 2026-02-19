@@ -207,16 +207,35 @@ class Caveman {
             if (!this.sceneManager || this.sceneManager.currentLevel !== 5) return;
             if (this.velocity.x >= 0) return;
 
-            const atLeftEdge = this.boundingBox.left <= 1;
+            const atLeftEdge = this.x <= 0;
             if (!atLeftEdge || !canExitLeftThroughGap()) return;
 
-            const playerCenterY = (this.boundingBox.top + this.boundingBox.bottom) / 2;
+            let leftMiddleTop = 150;
+            let leftMiddleBottom = 618;
 
-            if (playerCenterY <= 100) {
+            for (const entity of this.game.entities) {
+                if (!(entity instanceof Border)) continue;
+
+                const isLeftVerticalBorder =
+                    entity.boundingBox.left <= 1 &&
+                    entity.boundingBox.width <= 2 &&
+                    entity.boundingBox.height > 1;
+
+                if (!isLeftVerticalBorder) continue;
+
+                leftMiddleTop = entity.boundingBox.top;
+                leftMiddleBottom = entity.boundingBox.bottom;
+                break;
+            }
+
+            const inTopGap = this.boundingBox.bottom <= leftMiddleTop;
+            const inBottomGap = this.boundingBox.top >= leftMiddleBottom;
+
+            if (inTopGap) {
                 if (typeof this.sceneManager.reloadLevel === "function") {
                     this.sceneManager.reloadLevel();
                 }
-            } else if (playerCenterY >= 668) {
+            } else if (inBottomGap) {
                 if (typeof this.sceneManager.nextLevel === "function") {
                     this.sceneManager.nextLevel();
                 }
