@@ -73,12 +73,17 @@
     window.addEventListener('DOMContentLoaded', function() {
         const menu = document.getElementById('mainMenuOverlay');
         const startBtn = document.getElementById('startGameBtn');
+        const quitBtn = document.getElementById('quitGameBtn');
         if (menu && startBtn) {
             startBtn.addEventListener('click', function() {
                 menu.style.display = 'none';
-                // Optionally focus the canvas
                 const canvas = document.getElementById('gameWorld');
                 if (canvas) canvas.focus();
+            });
+        }
+        if (quitBtn) {
+            quitBtn.addEventListener('click', function() {
+                window.close();
             });
         }
     });
