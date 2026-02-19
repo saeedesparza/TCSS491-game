@@ -229,33 +229,55 @@ class SceneManager {
     loadLevel7() {
         this.clearEntities();
 
-        // bottom platform
-        this.game.addEntity(new Platform(0, 734, 1024, 32));
+        // bottom platforms
+        this.game.addEntity(new Platform(0, 734, 224, 32));
+        this.game.addEntity(new Spikes(224, 755, 390-224, 15));
+        this.game.addEntity(new SpikesRight(447, 630, 15, 100));
+        this.game.addEntity(new SpikesLeft(488, 630, 15, 100));
+        this.game.addEntity(new Platform(390, 734, 160, 32));
+        this.game.addEntity(new Spikes(550, 755, 475, 15));
 
         // vertical jump platforms
-        this.game.addEntity(new Platform(100, 150, 32, 32));
-        this.game.addEntity(new Platform(100, 250, 32, 32));
-        this.game.addEntity(new Platform(100, 350, 32, 32));
-        this.game.addEntity(new Platform(100, 450, 32, 32));
-        this.game.addEntity(new Platform(100, 550, 32, 32));
-        this.game.addEntity(new Platform(100, 650, 32, 32));
+        this.game.addEntity(new Platform(77, 150, 32, 32));
+        this.game.addEntity(new Platform(77, 250, 32, 32));
+        this.game.addEntity(new Platform(77, 350, 32, 32));
+        this.game.addEntity(new Platform(77, 450, 32, 32));
+        this.game.addEntity(new Platform(77, 550, 32, 32));
+        this.game.addEntity(new Platform(77, 650, 32, 32));
 
         // left wall with spikes
-        this.game.addEntity(new VerticalPlatform(0, 0, 32, 425, 0, 1));
-        this.game.addEntity(new SpikesLeft(30, 0, 15, 425));
+        this.game.addEntity(new VerticalPlatform(0, 0, 32, 680, 0, 1));
+        this.game.addEntity(new SpikesLeft(30, 0, 15, 680));
 
-        this.game.addEntity(new Platform(598, 500, 115, 32));
-        this.game.addEntity(new Spikes(610, 490, 90, 15));
+        // right wall with spikes
+        this.game.addEntity(new Platform(153, 150, 25, 32));
+        this.game.addEntity(new VerticalPlatform(153, 150, 32, 740, 0, 1));
+        this.game.addEntity(new SpikesRight(142, 150, 15, 740));
 
-        this.game.addEntity(new Platform(824, 435, 200, 32));
+        // second half post spike wall platforms
+        this.game.addEntity(new SpikesUD(556, 582, 30, 8));
+        this.game.addEntity(new Platform(555, 550, 32, 32));
+        this.game.addEntity(new SpikesUD(556, 682, 30, 8));
+        this.game.addEntity(new Platform(555, 650, 32, 32));
+        this.game.addEntity(new SpikesUD(556, 782, 30, 8));
 
+        // new platform to traverse towards border
+        this.game.addEntity(new Platform(746, 650, 12, 12));
+        this.game.addEntity(new Platform(876, 550, 12, 12));
+        this.game.addEntity(new Platform(746, 450, 12, 12));
+        this.game.addEntity(new Platform(646, 350, 12, 12));
+        this.game.addEntity(new Platform(746, 250, 12, 12));
+        this.game.addEntity(new Platform(876, 150, 12, 12));
+        this.game.addEntity(new MovingPlatform(this.game, 946, 250, 120, 32, 0, 60));
+
+        // borders
         this.game.addEntity(new Border(0, 0, 1, 768)); // Left border
         this.game.addEntity(new Border(1023, 435, 1, 318)); // Right border bottom
         this.game.addEntity(new Border(0, 767, 1024, 1)); // Bottom border
         this.game.addEntity(new Border(0, 0, 1024, 1)); // Top border
 
         const cav = new Caveman(this.game, this);
-        cav.x = 10;
+        cav.x = 5;
         cav.y = 686;
         cav.boundingBox.update(cav.x, cav.y);
         this.game.addEntity(cav);

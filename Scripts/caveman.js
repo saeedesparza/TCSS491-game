@@ -241,8 +241,12 @@ class Caveman {
         ctx.strokeStyle = "black";
         ctx.lineWidth = 3;
         const coordText = `X: ${x}  Y: ${y}`;
-        ctx.strokeText(coordText, 12, 24);
-        ctx.fillText(coordText, 12, 24);
+        // Get canvas width from context
+        const canvas = ctx.canvas;
+        const textWidth = ctx.measureText(coordText).width;
+        const centerX = canvas.width / 2;
+        ctx.strokeText(coordText, centerX - textWidth / 2, 24);
+        ctx.fillText(coordText, centerX - textWidth / 2, 24);
         ctx.restore();
     }
 }
