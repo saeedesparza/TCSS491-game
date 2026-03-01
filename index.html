@@ -55,6 +55,46 @@
         #mainMenuOverlay button:hover {
             background: #444;
         }
+        #endGameOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+        #endGameOverlay h1 {
+            color: #fff;
+            font-size: 4em;
+            margin: 0 0 0.5em 0;
+            font-family: 'Micro 5', sans-serif;
+            letter-spacing: 2px;
+        }
+        #endGameOverlay .end-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #endGameOverlay button {
+            font-size: 2em;
+            margin: 0.35em 0;
+            padding: 0.45em 2em;
+            border: none;
+            border-radius: 8px;
+            background: #222;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Micro 5', sans-serif;
+            transition: background 0.2s;
+            min-width: 220px;
+        }
+        #endGameOverlay button:hover {
+            background: #444;
+        }
     </style>
 
 </head>
@@ -81,16 +121,36 @@
         <button id="startGameBtn">Start</button>
         <button id="quitGameBtn">Quit</button>
     </div>
+    <div id="endGameOverlay">
+        <div class="end-content">
+            <h1>took you awhile</h1>
+            <button id="restartGameBtn">Restart</button>
+            <button id="endQuitGameBtn">Quit</button>
+        </div>
+    </div>
 
     <script>
     window.addEventListener('DOMContentLoaded', function() {
         const menu = document.getElementById('mainMenuOverlay');
+        const endOverlay = document.getElementById('endGameOverlay');
         const startBtn = document.getElementById('startGameBtn');
         const quitBtn = document.getElementById('quitGameBtn');
+        const restartGameBtn = document.getElementById('restartGameBtn');
+        const endQuitGameBtn = document.getElementById('endQuitGameBtn');
         const levelSelect = document.getElementById('levelSelect');
+
+        window.showEndScreen = function() {
+            if (endOverlay) {
+                endOverlay.style.display = 'flex';
+            }
+        };
+
         if (menu && startBtn && levelSelect) {
             startBtn.addEventListener('click', function() {
                 menu.style.display = 'none';
+                if (endOverlay) {
+                    endOverlay.style.display = 'none';
+                }
                 const canvas = document.getElementById('gameWorld');
                 if (canvas) canvas.focus();
                 // Set selected level and reload game
@@ -114,6 +174,28 @@
         }
         if (quitBtn) {
             quitBtn.addEventListener('click', function() {
+                window.close();
+            });
+        }
+
+        if (restartGameBtn) {
+            restartGameBtn.addEventListener('click', function() {
+                if (endOverlay) {
+                    endOverlay.style.display = 'none';
+                }
+                if (window.sceneManager && typeof window.sceneManager.restartGame === 'function') {
+                    window.sceneManager.restartGame();
+                } else if (window.sceneManager && typeof window.sceneManager.loadLevel1 === 'function') {
+                    window.sceneManager.isGameComplete = false;
+                    window.sceneManager.loadLevel1();
+                }
+                const canvas = document.getElementById('gameWorld');
+                if (canvas) canvas.focus();
+            });
+        }
+
+        if (endQuitGameBtn) {
+            endQuitGameBtn.addEventListener('click', function() {
                 window.close();
             });
         }

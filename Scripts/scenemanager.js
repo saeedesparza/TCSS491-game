@@ -4,13 +4,33 @@ class SceneManager {
         this.currentLevel = 0;
         this._queued = false;
         this._reloadQueued = false;
+        this.isGameComplete = false;
+    }
+
+    completeGame() {
+        this.isGameComplete = true;
+        this._queued = false;
+        this._reloadQueued = false;
+        this.clearEntities();
+
+        if (typeof window !== "undefined" && typeof window.showEndScreen === "function") {
+            window.showEndScreen();
+        }
     }
 
     clearEntities() {
         this.game.entities = [];
     }
 
+    restartGame() {
+        this.isGameComplete = false;
+        this._queued = false;
+        this._reloadQueued = false;
+        this.loadLevel1();
+    }
+
     loadLevel1() {
+        this.isGameComplete = false;
         this.currentLevel = 0;
         this.clearEntities();
 
@@ -491,6 +511,7 @@ class SceneManager {
     }
 
     nextLevel() {
+        if (this.isGameComplete) return;
         if (!this._queued) {
             this._queued = true;
             console.log("Level transition queued");
@@ -498,6 +519,7 @@ class SceneManager {
     }
 
     reloadLevel() {
+        if (this.isGameComplete) return;
         if (!this._reloadQueued) {
             this._reloadQueued = true;
             console.log("Level reload queued");
@@ -513,6 +535,11 @@ class SceneManager {
     }
 
     nextLevelImmediate() {
+        if (this.isGameComplete) {
+            this._queued = false;
+            return;
+        }
+
         this.currentLevel++;
         console.log("Loading level", this.currentLevel);
         if (this.currentLevel === 1) {
@@ -531,10 +558,10 @@ class SceneManager {
             this.loadLevel8();
         } else if (this.currentLevel === 8) {
             this.loadLevel9();
+        } else if (this.currentLevel === 9) {
+            this.loadLevel10();
         } else {
-            // loops back to level 1
-            this.currentLevel = 0;
-            this.loadLevel1();
+            this.completeGame();
         }
         this._queued = false;
     }
@@ -557,6 +584,10 @@ class SceneManager {
             this.loadLevel7();
         } else if (this.currentLevel === 7) {
             this.loadLevel8();
+        } else if (this.currentLevel === 8) {
+            this.loadLevel9();
+        } else if (this.currentLevel === 9) {
+            this.loadLevel10();
         } else {
             this.currentLevel = 0;
             this.loadLevel1();
