@@ -95,13 +95,53 @@
         #endGameOverlay button:hover {
             background: #444;
         }
+        #musicPlayer {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20,20,20,0.92);
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #0009;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            z-index: 2000;
+            font-family: 'Micro 5', sans-serif;
+        }
+        #musicPlayer button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.4em;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            line-height: 1;
+        }
+        #musicPlayer button:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        #musicPlayer input[type=range] {
+            width: 100px;
+            accent-color: #fff;
+            cursor: pointer;
+        }
+        #musicTrackLabel {
+            color: #aaa;
+            font-size: 0.85em;
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Micro 5', sans-serif;
+        }
     </style>
 
 </head>
 <body>
     <div style="position: relative; width: 1024px; height: 768px; margin: auto;">
         <canvas id="gameWorld" width="1024" height="768" style="border: 1px solid black; display: block; position: absolute; left: 0; top: 0; z-index: 1;" tabindex="0" autofocus></canvas>
-        <img id="hintArrowImg" src="Assets/arrowright.png" alt="Hint Arrow" style="position: absolute; top: 8px; right: 8px; width: 56px; height: 56px; z-index: 2; background: rgba(30,30,30,0.92); border-radius: 12px; box-shadow: 0 2px 12px #0008;" />
     </div>
     <div id="mainMenuOverlay">
         <h1>Failure Is Intended</h1>
@@ -121,6 +161,14 @@
         <button id="startGameBtn">Start</button>
         <button id="quitGameBtn">Quit</button>
     </div>
+    <div id="musicPlayer">
+        <button id="musicPrev" title="Previous">&#9664;&#9664;</button>
+        <button id="musicPause" title="Pause/Play">&#9646;&#9646;</button>
+        <button id="musicNext" title="Next">&#9654;&#9654;</button>
+        <span id="musicTrackLabel">Track 1 / 5</span>
+        <span style="color:#aaa;font-size:0.85em;">&#9834;</span>
+        <input type="range" id="musicVolume" min="0" max="100" value="50" title="Volume">
+    </div>
     <div id="endGameOverlay">
         <div class="end-content">
             <h1>took you awhile</h1>
@@ -130,6 +178,91 @@
     </div>
 
     <script>
+    (function() {
+        const tracks = [
+            './Assets/Project_362.mp3',
+            './Assets/Project_364.mp3',
+            './Assets/Project_365.mp3',
+            './Assets/Project_366.mp3',
+            './Assets/Project_393.mp3'
+        ];
+        let currentTrack = 0;
+        let started = false;
+        const audio = new Audio();
+        audio.volume = 0.5;
+
+        function updateLabel() {
+            const label = document.getElementById('musicTrackLabel');
+            if (label) label.textContent = 'Track ' + (currentTrack + 1) + ' / ' + tracks.length;
+        }
+
+        function updatePauseBtn() {
+            const btn = document.getElementById('musicPause');
+            if (btn) btn.innerHTML = audio.paused ? '&#9654;' : '&#9646;&#9646;';
+        }
+
+        function playTrack(index) {
+            currentTrack = ((index % tracks.length) + tracks.length) % tracks.length;
+            audio.src = tracks[currentTrack];
+            audio.play().catch(() => {});
+            updateLabel();
+            updatePauseBtn();
+        }
+
+        audio.addEventListener('ended', function() {
+            playTrack(currentTrack + 1);
+        });
+
+        audio.addEventListener('pause', updatePauseBtn);
+        audio.addEventListener('play', updatePauseBtn);
+
+        // Browsers require a user gesture before playing audio
+        function startMusic() {
+            if (!started) {
+                started = true;
+                playTrack(0);
+            }
+            document.removeEventListener('click', startMusic);
+            document.removeEventListener('keydown', startMusic);
+        }
+
+        document.addEventListener('click', startMusic);
+        document.addEventListener('keydown', startMusic);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLabel();
+
+            document.getElementById('musicPause').addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!started) { startMusic(); return; }
+                if (audio.paused) audio.play().catch(() => {});
+                else audio.pause();
+            });
+
+            document.getElementById('musicNext').addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!started) { startMusic(); return; }
+                playTrack(currentTrack + 1);
+            });
+
+            document.getElementById('musicPrev').addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!started) { startMusic(); return; }
+                // If more than 3s in, restart current track; otherwise go back
+                if (audio.currentTime > 3) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                } else {
+                    playTrack(currentTrack - 1);
+                }
+            });
+
+            document.getElementById('musicVolume').addEventListener('input', function() {
+                audio.volume = this.value / 100;
+            });
+        });
+    })();
+
     window.addEventListener('DOMContentLoaded', function() {
         const menu = document.getElementById('mainMenuOverlay');
         const endOverlay = document.getElementById('endGameOverlay');
